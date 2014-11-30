@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "make_dirs", "make_dirs\make_dirs.csproj", "{436DE78D-41B1-4BCA-BCAA-4ECDAC9D51A3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dir2xml", "dir2xml\dir2xml.csproj", "{8C228F26-E2A1-43C4-ABCC-3FDB6698BA56}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{436DE78D-41B1-4BCA-BCAA-4ECDAC9D51A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{436DE78D-41B1-4BCA-BCAA-4ECDAC9D51A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{436DE78D-41B1-4BCA-BCAA-4ECDAC9D51A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C228F26-E2A1-43C4-ABCC-3FDB6698BA56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C228F26-E2A1-43C4-ABCC-3FDB6698BA56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C228F26-E2A1-43C4-ABCC-3FDB6698BA56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C228F26-E2A1-43C4-ABCC-3FDB6698BA56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

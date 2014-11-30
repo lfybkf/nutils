@@ -1,0 +1,40 @@
+Microsoft (R) Build Engine Version 4.0.30319.1
+[Microsoft .NET Framework, Version 4.0.30319.1]
+Copyright (C) Microsoft Corporation 2007. All rights reserved.
+
+Build started 21.11.2014 23:07:29.
+Project "D:\Repository\nutils\make_dirs\make_dirs.csproj" on node 1 (default targets).
+C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets(847,9): warning MSB3644: The reference assemblies for framework ".NETFramework,Version=v4.0" were not found. To resolve this, install the SDK or Targeting Pack for this framework version or retarget your application to a version of the framework for which you have the SDK or Targeting Pack installed. Note that assemblies will be resolved from the Global Assembly Cache (GAC) and will be used in place of reference assemblies. Therefore your assembly may not be correctly targeted for the framework you intend. [D:\Repository\nutils\make_dirs\make_dirs.csproj]
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+_CopyFilesMarkedCopyLocal:
+  Copying file from "C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorlib.dll" to "bin\Debug\mscorlib.dll".
+  Copying file from "C:\Windows\Microsoft.Net\assembly\GAC_32\System.Data\v4.0_4.0.0.0__b77a5c561934e089\System.Data.dll" to "bin\Debug\System.Data.dll".
+  Copying file from "C:\Windows\Microsoft.Net\assembly\GAC_32\System.Transactions\v4.0_4.0.0.0__b77a5c561934e089\System.Transactions.dll" to "bin\Debug\System.Transactions.dll".
+  Copying file from "C:\Windows\Microsoft.Net\assembly\GAC_32\System.EnterpriseServices\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.EnterpriseServices.dll" to "bin\Debug\System.EnterpriseServices.dll".
+  Copying file from "C:\Windows\Microsoft.Net\assembly\GAC_32\System.Web\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Web.dll" to "bin\Debug\System.Web.dll".
+  Copying file from "C:\Windows\Microsoft.Net\assembly\GAC_32\System.Data.OracleClient\v4.0_4.0.0.0__b77a5c561934e089\System.Data.OracleClient.dll" to "bin\Debug\System.Data.OracleClient.dll".
+  Copying file from "C:\Windows\Microsoft.NET\Framework\v4.0.30319\normidna.nlp" to "bin\Debug\normidna.nlp".
+  Copying file from "C:\Windows\Microsoft.NET\Framework\v4.0.30319\normnfc.nlp" to "bin\Debug\normnfc.nlp".
+  Copying file from "C:\Windows\Microsoft.NET\Framework\v4.0.30319\normnfd.nlp" to "bin\Debug\normnfd.nlp".
+  Copying file from "C:\Windows\Microsoft.NET\Framework\v4.0.30319\normnfkc.nlp" to "bin\Debug\normnfkc.nlp".
+  Copying file from "C:\Windows\Microsoft.NET\Framework\v4.0.30319\normnfkd.nlp" to "bin\Debug\normnfkd.nlp".
+  Copying file from "C:\Windows\Microsoft.Net\assembly\GAC_32\System.EnterpriseServices\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.EnterpriseServices.Wrapper.dll" to "bin\Debug\System.EnterpriseServices.Wrapper.dll".
+_CopyAppConfigFile:
+  Copying file from "App.config" to "bin\Debug\make_dirs.exe.config".
+CopyFilesToOutputDirectory:
+  make_dirs -> D:\Repository\nutils\make_dirs\bin\Debug\make_dirs.exe
+Done Building Project "D:\Repository\nutils\make_dirs\make_dirs.csproj" (default targets).
+
+Build succeeded.
+
+"D:\Repository\nutils\make_dirs\make_dirs.csproj" (default target) (1) ->
+(GetReferenceAssemblyPaths target) -> 
+  C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets(847,9): warning MSB3644: The reference assemblies for framework ".NETFramework,Version=v4.0" were not found. To resolve this, install the SDK or Targeting Pack for this framework version or retarget your application to a version of the framework for which you have the SDK or Targeting Pack installed. Note that assemblies will be resolved from the Global Assembly Cache (GAC) and will be used in place of reference assemblies. Therefore your assembly may not be correctly targeted for the framework you intend. [D:\Repository\nutils\make_dirs\make_dirs.csproj]
+
+    1 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.68
