@@ -37,7 +37,7 @@ namespace ConsoleApplication1
                 Console.WriteLine("Done with " + newDir);
             }//for
 
-            Console.ReadLine();
+//            Console.ReadLine();
         }//function
     }//class
 }
