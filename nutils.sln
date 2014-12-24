@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "make_dirs", "make_dirs\make
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dir2xml", "dir2xml\dir2xml.csproj", "{8C228F26-E2A1-43C4-ABCC-3FDB6698BA56}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenameRandom", "RenameRandom\RenameRandom.csproj", "{1C9A033E-E9C4-4172-9C60-6F7A83D43B9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{8C228F26-E2A1-43C4-ABCC-3FDB6698BA56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C228F26-E2A1-43C4-ABCC-3FDB6698BA56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C228F26-E2A1-43C4-ABCC-3FDB6698BA56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C9A033E-E9C4-4172-9C60-6F7A83D43B9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C9A033E-E9C4-4172-9C60-6F7A83D43B9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C9A033E-E9C4-4172-9C60-6F7A83D43B9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C9A033E-E9C4-4172-9C60-6F7A83D43B9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
