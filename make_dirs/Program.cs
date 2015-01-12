@@ -9,7 +9,7 @@ namespace ConsoleApplication1
 {
     class Program
     {
-        static int LIMIT = 70;
+        static int LIMIT = 40;
         static string searchPattern = "*.jpg";
         
         static void Main(string[] args)
