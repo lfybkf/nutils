@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenameRandom", "RenameRando
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "killProcess", "killProcess\killProcess.csproj", "{8F4E7045-B2F7-414D-BB23-1E0FE9263460}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileNameEdit", "FileNameEdit\FileNameEdit.csproj", "{08B0A251-85DC-484A-A61A-D25A82C597CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{8F4E7045-B2F7-414D-BB23-1E0FE9263460}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F4E7045-B2F7-414D-BB23-1E0FE9263460}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F4E7045-B2F7-414D-BB23-1E0FE9263460}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08B0A251-85DC-484A-A61A-D25A82C597CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08B0A251-85DC-484A-A61A-D25A82C597CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08B0A251-85DC-484A-A61A-D25A82C597CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08B0A251-85DC-484A-A61A-D25A82C597CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
