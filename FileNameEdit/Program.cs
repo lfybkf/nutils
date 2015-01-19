@@ -22,9 +22,13 @@ namespace FileNameEdit
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-			Chooser obj = Chooser.createVideo();
+			Chooser[] chooses = {Chooser.createVideo(), Chooser.createBook()};
+
+
 			string Old = args.First();
 			string Ext = Path.GetExtension(Old);
+
+            Chooser obj = chooses.First(c => c.IsGoodExtension(Ext));
 			obj.Old = Path.GetFileNameWithoutExtension(Old);
 			Application.Run(obj.frm);
 

@@ -34,7 +34,7 @@ namespace FileNameEdit
 			else
 				obj.New = string.Format("{0} ({1})", Name, Year);
 
-			Tag = null;
+            this.setChooser(null);
 			Close();
 		}
 
@@ -47,16 +47,15 @@ namespace FileNameEdit
 				obj.New = null;
 				Close();
 			}//else
-
 		}
 
 		private void frmVideo_Load(object sender, EventArgs e)
 		{
-			obj = (Tag as Chooser);
+			obj = this.getChooser();
 
 			ctlOld.Text = obj.Old;
 
-			Regex rex; MatchCollection mc; CaptureCollection cc; Match m;
+            Regex rex; Match m; //MatchCollection mc; CaptureCollection cc; 
 			rex = new Regex(@"(.*) [(]([0-9]{4})[)]");
 			if (rex.IsMatch(obj.Old))
 			{
