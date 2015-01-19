@@ -68,7 +68,7 @@
             this.btnOK.Location = new System.Drawing.Point(177, 102);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(481, 29);
-            this.btnOK.TabIndex = 0;
+            this.btnOK.TabIndex = 4;
             this.btnOK.Text = "button1";
             this.btnOK.UseVisualStyleBackColor = true;
             // 
@@ -80,7 +80,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(168, 33);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Имя";
+            this.label1.Text = "Название";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label3
@@ -111,7 +111,7 @@
             this.ctlName.Location = new System.Drawing.Point(177, 3);
             this.ctlName.Name = "ctlName";
             this.ctlName.Size = new System.Drawing.Size(481, 31);
-            this.ctlName.TabIndex = 7;
+            this.ctlName.TabIndex = 1;
             this.ctlName.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ctl_KeyUp);
             // 
             // ctlAuthor
@@ -120,7 +120,7 @@
             this.ctlAuthor.Location = new System.Drawing.Point(177, 36);
             this.ctlAuthor.Name = "ctlAuthor";
             this.ctlAuthor.Size = new System.Drawing.Size(481, 31);
-            this.ctlAuthor.TabIndex = 8;
+            this.ctlAuthor.TabIndex = 2;
             this.ctlAuthor.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ctl_KeyUp);
             // 
             // ctlYear
@@ -129,7 +129,7 @@
             this.ctlYear.Location = new System.Drawing.Point(177, 69);
             this.ctlYear.Name = "ctlYear";
             this.ctlYear.Size = new System.Drawing.Size(481, 31);
-            this.ctlYear.TabIndex = 9;
+            this.ctlYear.TabIndex = 3;
             this.ctlYear.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ctl_KeyUp);
             // 
             // frmBook
@@ -141,7 +141,7 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "frmBook";
-            this.Text = "frmBook";
+            this.Text = "Book";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);

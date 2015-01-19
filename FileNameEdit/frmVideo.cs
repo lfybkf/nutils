@@ -18,6 +18,7 @@ namespace FileNameEdit
 		public frmVideo()
 		{
 			InitializeComponent();
+            ctlName.setRusLanguageOnEnter();
 		}
 
 		private void btnOK_Click(object sender, EventArgs e)

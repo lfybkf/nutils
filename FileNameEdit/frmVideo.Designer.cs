@@ -143,7 +143,7 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "frmVideo";
-            this.Text = "Form1";
+            this.Text = "Video";
             this.Load += new System.EventHandler(this.frmVideo_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

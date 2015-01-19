@@ -15,9 +15,17 @@ namespace FileNameEdit
     {
         Chooser obj;
 
+
         public frmBook()
         {
             InitializeComponent();
+            
+            ctlName.setRusLanguageOnEnter();
+            ctlAuthor.setRusLanguageOnEnter();
+            this.Load += frm_Load;
+            btnOK.Click += btnOK_Click;            
+
+            btnOK.Text = "OK";
         }
 
 
@@ -33,12 +41,15 @@ namespace FileNameEdit
             string Year = ctlYear.Text;
             if (string.IsNullOrWhiteSpace(Year) && string.IsNullOrWhiteSpace(Author))
                 obj.New = Name;
-            else if (string.IsNullOrWhiteSpace(Year))
-                obj.New = string.Format("{0} ({1})", Name, Author);
-            else if (string.IsNullOrWhiteSpace(Author))
-                obj.New = string.Format("{0} ({1})", Name, Year);
             else
-                obj.New = string.Format("{0} ({1} {2})", Name, Year, Author);
+            {
+                if (string.IsNullOrWhiteSpace(Year))
+                    obj.New = string.Format("{0} ({1})", Name, Author);
+                else if (string.IsNullOrWhiteSpace(Author))
+                    obj.New = string.Format("{0} ({1})", Name, Year);
+                else
+                    obj.New = string.Format("{0} ({1} {2})", Name, Year, Author);
+            }//else
 
             this.setChooser(null);
             Close();
@@ -59,14 +70,23 @@ namespace FileNameEdit
         private void frm_Load(object sender, EventArgs e)
         {
             obj = this.getChooser();
-
             Text = obj.Old;
 
             Regex rex; Match m; //MatchCollection mc; CaptureCollection cc; 
             Regex rexNameYear = new Regex(@"(.*) [(]([0-9]{4})[)]"); // Name (Year)
             Regex rexNameAuthor = new Regex(@"(.*) [(](.*)[)]"); // Name (Author)
             Regex rexAll = new Regex(@"(.*) [(]([0-9]{4}) (.*)[)]"); // Name (Year Author)
-            if (rexNameYear.IsMatch(obj.Old))
+            if (false)
+                ;
+            else if (rexAll.IsMatch(obj.Old))
+            {
+                rex = rexAll;
+                m = rex.Match(obj.Old);
+                ctlName.Text = m.Groups[1].Value;
+                ctlYear.Text = m.Groups[2].Value;
+                ctlAuthor.Text = m.Groups[3].Value;
+            }//else
+            else if (rexNameYear.IsMatch(obj.Old))
             {
                 rex = rexNameYear;
                 m = rex.Match(obj.Old);
@@ -79,14 +99,6 @@ namespace FileNameEdit
                 m = rex.Match(obj.Old);
                 ctlName.Text = m.Groups[1].Value;
                 ctlAuthor.Text = m.Groups[2].Value;
-            }//else
-            else if (rexAll.IsMatch(obj.Old))
-            {
-                rex = rexAll;
-                m = rex.Match(obj.Old);
-                ctlName.Text = m.Groups[1].Value;
-                ctlYear.Text = m.Groups[2].Value;
-                ctlAuthor.Text = m.Groups[3].Value;
             }//else
             else
             {
