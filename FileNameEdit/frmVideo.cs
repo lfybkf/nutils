@@ -18,12 +18,14 @@ namespace FileNameEdit
 		public frmVideo()
 		{
 			InitializeComponent();
-            ctlName.setRusLanguageOnEnter();
-		}
 
-		private void btnOK_Click(object sender, EventArgs e)
-		{
-			Do();
+			#region Events
+			ctlName.setRusLanguageOnEnter();
+			this.Load += frm_Load;
+			btnOK.Click += (s, e) => { Do(); };
+			ctlName.KeyUp += ctl_KeyUp;
+			ctlYear.KeyUp += ctl_KeyUp;
+			#endregion
 		}//function
 
 		private void Do()
@@ -33,52 +35,31 @@ namespace FileNameEdit
 			if (string.IsNullOrWhiteSpace(Year))
 				obj.New = Name;
 			else
-				obj.New = string.Format("{0} ({1})", Name, Year);
+				obj.New = "{0} ({1})".fmt(Name, Year);
 
-            this.setChooser(null);
+			this.setChooser(null);
 			Close();
 		}
 
-		private void ctlName_KeyUp(object sender, KeyEventArgs e)
+		private void ctl_KeyUp(object sender, KeyEventArgs e)
 		{
-			if (e.KeyCode == Keys.Enter)
-				Do();
-			else if (e.KeyCode == Keys.Escape)
-			{
-				obj.New = null;
-				Close();
-			}//else
+			if (e.KeyCode == Keys.Enter) { Do(); } //if
+			else if (e.KeyCode == Keys.Escape) { obj.New = null; Close(); }//else
 		}
 
-		private void frmVideo_Load(object sender, EventArgs e)
+		private void frm_Load(object sender, EventArgs e)
 		{
 			obj = this.getChooser();
+			Text = obj.Old;
 
-			ctlOld.Text = obj.Old;
-
-            Regex rex; Match m; //MatchCollection mc; CaptureCollection cc; 
-			rex = new Regex(@"(.*) [(]([0-9]{4})[)]");
-			if (rex.IsMatch(obj.Old))
+			bool parsed = obj.Parse();
+			if (parsed)
 			{
-				m = rex.Match(obj.Old);
-				ctlName.Text = m.Groups[1].Value;
-				ctlYear.Text = m.Groups[2].Value;
+				ctlName.Text = obj.parse.getValue("Name") ?? string.Empty;
+				ctlYear.Text = obj.parse.getValue("Year") ?? string.Empty;
 			}//if
 			else
-			{
-				rex = new Regex("(.*)([0-9]{4}).*");
-				if (rex.IsMatch(obj.Old))
-				{
-					m = rex.Match(obj.Old);
-					ctlName.Text = m.Groups[1].Value;
-					ctlYear.Text = m.Groups[2].Value;
-				}//if
-				else
-				{
-					ctlName.Text = obj.Old;
-				}//else
-			}//else
-			
-		}//function
+				ctlName.Text = obj.Old;
+			}//function
 	}//class
 }//ns
