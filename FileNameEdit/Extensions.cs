@@ -15,6 +15,7 @@ namespace FileNameEdit
 		public static void setRusLanguageOnEnter(this TextBox tb)	{	tb.setLanguageOnEnter("ru-RU");	}//function
 		public static void setEngLanguageOnEnter(this TextBox tb) { tb.setLanguageOnEnter("en-US"); }//function
 		public static string fmt(this string s, params string[] ss) { return string.Format(s, ss); }//function
+		public static string KeyFromName(this TextBox tb) { return tb.Name.Substring(3); }//function
 
 		public static void setLanguageOnEnter(this TextBox tb, string Culture)
 		{
@@ -35,6 +36,5 @@ namespace FileNameEdit
 			else
 				return null;
 		}//function
-
 	}//class
 }//ns

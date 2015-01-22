@@ -37,21 +37,7 @@ namespace FileNameEdit
 
 		private void Do()
 		{
-			string Name = ctlName.Text;
-			string Author = ctlAuthor.Text;
-			string Year = ctlYear.Text;
-			if (string.IsNullOrWhiteSpace(Year) && string.IsNullOrWhiteSpace(Author))
-					obj.New = Name;
-			else
-			{
-				if (string.IsNullOrWhiteSpace(Year))
-					obj.New = string.Format("{0} ({1})", Name, Author);
-				else if (string.IsNullOrWhiteSpace(Author))
-					obj.New = string.Format("{0} ({1})", Name, Year);
-				else
-					obj.New = string.Format("{0} ({1} {2})", Name, Year, Author);
-			}//else
-
+			obj.Do();
 			this.setChooser(null);
 			Close();
 		}//fucntion
@@ -68,14 +54,7 @@ namespace FileNameEdit
 		obj = this.getChooser();
 		Text = obj.Old;
 
-		bool parsed = obj.Parse();
-		if (parsed)
-		{
-			ctlName.Text = obj.parse.getValue("Name") ?? string.Empty;
-			ctlAuthor.Text = obj.parse.getValue("Author") ?? string.Empty;
-			ctlYear.Text = obj.parse.getValue("Year") ?? string.Empty;
-		}//if
-		else
+		if (obj.Parse() == false)
 			ctlName.Text = obj.Old;
 		}//function
 	}//class

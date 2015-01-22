@@ -30,13 +30,7 @@ namespace FileNameEdit
 
 		private void Do()
 		{
-			string Name = ctlName.Text;
-			string Year = ctlYear.Text;
-			if (string.IsNullOrWhiteSpace(Year))
-				obj.New = Name;
-			else
-				obj.New = "{0} ({1})".fmt(Name, Year);
-
+			obj.Do();
 			this.setChooser(null);
 			Close();
 		}
@@ -52,14 +46,8 @@ namespace FileNameEdit
 			obj = this.getChooser();
 			Text = obj.Old;
 
-			bool parsed = obj.Parse();
-			if (parsed)
-			{
-				ctlName.Text = obj.parse.getValue("Name") ?? string.Empty;
-				ctlYear.Text = obj.parse.getValue("Year") ?? string.Empty;
-			}//if
-			else
+			if (obj.Parse() == false)
 				ctlName.Text = obj.Old;
-			}//function
+		}//function
 	}//class
 }//ns
