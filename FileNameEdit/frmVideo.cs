@@ -13,41 +13,47 @@ namespace FileNameEdit
 {
 	public partial class frmVideo : Form
 	{
-		Chooser obj;
-
 		public frmVideo()
 		{
 			InitializeComponent();
 
+			ctlName.TabIndex = 0;
+
 			#region Events
 			ctlName.setRusLanguageOnEnter();
 			this.Load += frm_Load;
-			btnOK.Click += (s, e) => { Do(); };
+			btnOK.Click += (s, e) => { Finish(true); };
 			ctlName.KeyUp += ctl_KeyUp;
 			ctlYear.KeyUp += ctl_KeyUp;
 			#endregion
 		}//function
 
-		private void Do()
+		private void Finish(bool OK)
 		{
-			obj.Do();
+			Chooser obj = this.getChooser();
+			if (OK)
+				obj.Do();
+			else
+				obj.New = null;
+
 			this.setChooser(null);
 			Close();
-		}
+		}//function
 
 		private void ctl_KeyUp(object sender, KeyEventArgs e)
 		{
-			if (e.KeyCode == Keys.Enter) { Do(); } //if
-			else if (e.KeyCode == Keys.Escape) { obj.New = null; Close(); }//else
+			if (e.KeyCode == Keys.Enter) { Finish(true); } //if
+			else if (e.KeyCode == Keys.Escape) { Finish(false); }//else
 		}
 
 		private void frm_Load(object sender, EventArgs e)
 		{
-			obj = this.getChooser();
+			Chooser obj = this.getChooser();
 			Text = obj.Old;
 
 			if (obj.Parse() == false)
 				ctlName.Text = obj.Old;
 		}//function
+
 	}//class
 }//ns
