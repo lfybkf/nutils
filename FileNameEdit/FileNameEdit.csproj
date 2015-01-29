@@ -58,6 +58,12 @@
     <Compile Include="frmDistrib.Designer.cs">
       <DependentUpon>frmDistrib.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmLib.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLib.Designer.cs">
+      <DependentUpon>frmLib.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmVideo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -71,6 +77,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmDistrib.resx">
       <DependentUpon>frmDistrib.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLib.resx">
+      <DependentUpon>frmLib.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmVideo.resx">
       <DependentUpon>frmVideo.cs</DependentUpon>

@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace FileNameEdit
 {
@@ -22,8 +23,12 @@ namespace FileNameEdit
 		public bool IsMatch(string ext) { return Extensions.Contains(ext); }//function
 		IEnumerable<TextBox> GetTextBoxes() { return frm.Controls.Cast<Control>().SelectMany(c => c.Controls.OfType<TextBox>()); } //function
 
+		public static void Init()
+		{
+			//registr.Add(Tuple.Create("Video", frmVideo, makeNewBook));
+		}//function
 
-		void makeNewBook()
+		public void makeNewBook()
 		{
 			string Name = content.getValue("Name");
 			string Year = content.getValue("Year");
@@ -41,7 +46,19 @@ namespace FileNameEdit
 			}//else
 		}//function
 
-		void makeNewDistrib()
+		public void makeNewLib()
+		{
+			string Name = content.getValue("Name");
+			string Author = content.getValue("Author");
+			string Nomer = content.getValue("Nomer");
+
+			if (string.IsNullOrWhiteSpace(Nomer))
+				New = "{0} - {1}".fmt(Author, Name);
+			else
+				New = "{0} - {1} - {2}".fmt(Author, Name, Nomer);
+		}//function
+
+		public void makeNewDistrib()
 		{
 			string Name = content.getValue("Name");
 			string Version = content.getValue("Version");
@@ -51,7 +68,7 @@ namespace FileNameEdit
 				New = "{0}_{1}_setup".fmt(Name, Version);
 		}//function
 
-		void makeNewVideo()
+		public void makeNewVideo()
 		{
 			string Name = content.getValue("Name");
 			string Year = content.getValue("Year");
@@ -95,6 +112,19 @@ namespace FileNameEdit
 				foreach (var tb in GetTextBoxes()) { tb.Text = content.getValue(tb.Name.Substring(3)) ?? string.Empty; }//for
 			}//if
 			return true;
+		}//function
+
+		public static IEnumerable<Chooser> takeAll()
+		{
+			 
+			Type type = typeof(Chooser);
+			var list = type.GetMethods()
+				.Where(mi => mi.Name.StartsWith("create"))
+				.Select(mi => (Func<Chooser>)mi.CreateDelegate(typeof(Func<Chooser>)));
+			foreach (var f in list)
+			{
+				yield return f();
+			}//for
 		}//function
 
 		public static Chooser createVideo()
@@ -145,5 +175,20 @@ namespace FileNameEdit
 			return Ret;
 		}//function
 
+		public static Chooser createLib()
+		{
+			Chooser Ret = new Chooser();
+			Ret.frm = new frmLib(); Ret.frm.setChooser(Ret);
+			Ret.makeNewFromContent = Ret.makeNewLib;
+			Ret.Extensions.Add(".fb2");
+			Ret.Extensions.Add(".txt");
+			#region Regex
+			Ret.rexs.Add(new Regex(@"(?<Author>.*) - (?<Name>.*) - (?<Nomer>[0-9]*)")); // Author - Name - Nomer
+			Ret.rexs.Add(new Regex(@"(?<Author>.*) - (?<Name>.*)")); // Author - Name
+			#endregion
+
+			return Ret;
+		}//function
 	}//class
+	//(Action)typeof(Chooser).GetMethod(Ret.frm.GetType().Name.regOne("frm(.*)").setTo("makeNew{0}")).CreateDelegate(typeof(Action))
 }//ns

@@ -22,7 +22,7 @@ namespace FileNameEdit
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-			Chooser[] chooses = {Chooser.createVideo(), Chooser.createBook(), Chooser.createDistrib()};
+			IEnumerable<Chooser> chooses = Chooser.takeAll().ToArray();
 
 			string Old = args.First();
 			string Ext = Path.GetExtension(Old);
