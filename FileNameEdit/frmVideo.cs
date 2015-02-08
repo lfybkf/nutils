@@ -18,6 +18,7 @@ namespace FileNameEdit
 			InitializeComponent();
 
 			ctlName.TabIndex = 0;
+			ctlYear.TabIndex = 1;
 
 			#region Events
 			ctlName.setRusLanguageOnEnter();
