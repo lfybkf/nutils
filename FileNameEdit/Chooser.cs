@@ -48,14 +48,21 @@ namespace FileNameEdit
 
 		public void makeNewLib()
 		{
-			string Name = content.getValue("Name");
 			string Author = content.getValue("Author");
+			string Seria = content.getValue("Seria");
+			string Name = content.getValue("Name");
 			string Nomer = content.getValue("Nomer");
-
-			if (string.IsNullOrWhiteSpace(Nomer))
+			Nomer = Nomer == null ? null : Nomer.PadLeft(3, '0').Substring(1);
+			if (AllExists(Author, Seria, Nomer, Name))
+				New = "{0} - {1}-{2} - {3}".fmt(Author, Seria, Nomer, Name);
+			else if (AllExists(Author, Seria, Nomer))
+				New = "{0} - {1}-{2}".fmt(Author, Seria, Nomer);
+			else if (AllExists(Seria, Nomer, Name))
+				New = "{0}-{1} - {2}".fmt(Seria, Nomer, Name);
+			else if (AllExists(Seria, Nomer))
+				New = "{0}-{1}".fmt(Seria, Nomer);
+			else if (AllExists(Author, Name))
 				New = "{0} - {1}".fmt(Author, Name);
-			else
-				New = "{0} - {1} - {2}".fmt(Author, Name, Nomer);
 		}//function
 
 		public void makeNewDistrib()
@@ -72,13 +79,22 @@ namespace FileNameEdit
 		{
 			string Name = content.getValue("Name");
 			string Year = content.getValue("Year");
-			if (string.IsNullOrWhiteSpace(Year) == false)
+			string Seria = content.getValue("Seria");
+			if (AllExists(Name, Year, Seria))
+				New = "{2} - {0} ({1})".fmt(Name, Year, Seria);
+			else if (AllExists(Name, Seria))
+				New = "{1} - {0}".fmt(Name, Seria);
+			else if (AllExists(Name, Year))
 				New = "{0} ({1})".fmt(Name, Year);
 			else
 				New = Name;
 		}//function
 
-	
+		public static bool AllExists(params string[] ss)
+		{
+			return ss.All(val => string.IsNullOrWhiteSpace(val) == false);
+		}//function
+
 		/// <summary>
 		/// формировать New
 		/// </summary>
@@ -133,11 +149,15 @@ namespace FileNameEdit
 			Ret.frm = new frmVideo(); Ret.frm.setChooser(Ret);
 			Ret.makeNewFromContent = Ret.makeNewVideo;
 			Ret.Extensions.Add(".avi");	
-			Ret.Extensions.Add(".mkv");	
+			Ret.Extensions.Add(".mkv");
+			Ret.Extensions.Add(".mov");
 			Ret.Extensions.Add(".mp4");
 			Ret.Extensions.Add(".mpg");
+			Ret.rexs.Add(new Regex(@"(?<Seria>.*) - (?<Name>.*) [(](?<Year>[0-9]{4})[)]")); // Seria - Name (Year)
+			Ret.rexs.Add(new Regex(@"(?<Seria>.*) - (?<Name>.*)")); // Seria - Name
 			Ret.rexs.Add(new Regex(@"(?<Name>.*) [(](?<Year>[0-9]{4})[)]")); // Name (Year)
 			Ret.rexs.Add(new Regex(@"(?<Name>.*)(?<Year>[0-9]{4}).*")); // NameYear
+			Ret.rexs.Add(new Regex(@"(?<Name>.*).*")); // Name
 			return Ret;
 		}//function
 
@@ -183,7 +203,12 @@ namespace FileNameEdit
 			Ret.Extensions.Add(".fb2");
 			Ret.Extensions.Add(".txt");
 			#region Regex
-			Ret.rexs.Add(new Regex(@"(?<Author>.*) - (?<Name>.*) - (?<Nomer>[0-9]*)")); // Author - Name - Nomer
+			Ret.rexs.Add(new Regex(@"(?<Author>.*) - (?<Seria>.*)-(?<Nomer>[0-9]{1,3}) - (?<Name>.*)")); // Author - Seria-Nomer - Name
+			Ret.rexs.Add(new Regex(@"(?<Author>.*) - (?<Seria>.*)-(?<Nomer>[0-9]{1,3}) (?<Name>.*)")); // Author - Seria-Nomer Name
+			Ret.rexs.Add(new Regex(@"(?<Author>.*) - (?<Seria>.*) (?<Nomer>[0-9]{1,3})")); // Author - Seria Nomer
+			Ret.rexs.Add(new Regex(@"(?<Author>.*) - (?<Seria>.*)-(?<Nomer>[0-9]{1,3})")); // Author - Seria-Nomer
+			Ret.rexs.Add(new Regex(@"(?<Seria>.*)-(?<Nomer>[0-9]{1,3}) - (?<Name>.*)")); // Seria-Nomer - Name
+			Ret.rexs.Add(new Regex(@"(?<Seria>.*)-(?<Nomer>[0-9]{1,3})")); // Seria-Nomer
 			Ret.rexs.Add(new Regex(@"(?<Author>.*) - (?<Name>.*)")); // Author - Name
 			#endregion
 

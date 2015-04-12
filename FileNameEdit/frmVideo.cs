@@ -19,6 +19,8 @@ namespace FileNameEdit
 
 			ctlName.TabIndex = 0;
 			ctlYear.TabIndex = 1;
+			ctlSeria.TabIndex = 2;
+			btnOK.TabIndex = 100;
 
 			#region Events
 			ctlName.setRusLanguageOnEnter();
@@ -26,6 +28,7 @@ namespace FileNameEdit
 			btnOK.Click += (s, e) => { Finish(true); };
 			ctlName.KeyUp += ctl_KeyUp;
 			ctlYear.KeyUp += ctl_KeyUp;
+			ctlSeria.KeyUp += ctl_KeyUp;
 			#endregion
 		}//function
 

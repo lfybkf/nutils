@@ -16,18 +16,21 @@ namespace FileNameEdit
 		public frmLib()
 		{
 			InitializeComponent();
-			
-			ctlName.TabIndex = 0;
 			ctlAuthor.TabIndex = 1;
-			ctlNomer.TabIndex = 2;
+			ctlSeria.TabIndex = 2;
+			ctlName.TabIndex = 3;
+			ctlNomer.TabIndex = 4;
+			btnOK.TabIndex = 100;
 
 			#region Events
 			ctlName.setRusLanguageOnEnter();
 			ctlAuthor.setRusLanguageOnEnter();
+			ctlSeria.setRusLanguageOnEnter();
 			this.Load += frm_Load;
 			btnOK.Click += (s, e) => { Finish(true); };
 			ctlName.KeyUp += ctl_KeyUp;
 			ctlAuthor.KeyUp += ctl_KeyUp;
+			ctlSeria.KeyUp += ctl_KeyUp;
 			ctlNomer.KeyUp += ctl_KeyUp;
 			#endregion
 

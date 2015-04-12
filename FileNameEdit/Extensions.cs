@@ -46,5 +46,10 @@ namespace FileNameEdit
 		/// <param name="patern"></param>
 		/// <returns></returns>
 		public static string regOne(this string s, string patern) { return new Regex(patern).Match(s).Groups[1].Value; }//function
+
+		public static bool AllExists(this string s, params string[] ss)
+		{
+			return ss.All(val => string.IsNullOrWhiteSpace(val) == false);
+		}//function
 	}//class
 }//ns
