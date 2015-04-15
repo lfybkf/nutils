@@ -148,7 +148,8 @@ namespace FileNameEdit
 			Chooser Ret = new Chooser();
 			Ret.frm = new frmVideo(); Ret.frm.setChooser(Ret);
 			Ret.makeNewFromContent = Ret.makeNewVideo;
-			Ret.Extensions.Add(".avi");	
+			Ret.Extensions.Add(".avi");
+			Ret.Extensions.Add(".flv");
 			Ret.Extensions.Add(".mkv");
 			Ret.Extensions.Add(".mov");
 			Ret.Extensions.Add(".mp4");
