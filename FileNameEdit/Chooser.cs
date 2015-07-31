@@ -121,7 +121,7 @@ namespace FileNameEdit
 
 			var names = rex.GetGroupNames().ToList();
 			Match m = rex.Match(Old);
-			names.ForEach(s => content.Add(s, m.Groups[s].Value));
+			names.ForEach(s => content.Add(s, m.Groups[s].Value.Trim()));
 
 			if (frm != null)
 			{
@@ -169,6 +169,8 @@ namespace FileNameEdit
 			Ret.makeNewFromContent = Ret.makeNewBook;
 			Ret.Extensions.Add(".chm");
 			Ret.Extensions.Add(".djvu");
+			Ret.Extensions.Add(".epub");
+			Ret.Extensions.Add(".mobi");
 			Ret.Extensions.Add(".pdf"); 
 			#region Regex
 			Ret.rexs.Add(new Regex(@"(?<Name>.*) [(](?<Year>[0-9]{4}) (?<Author>.*)[)]")); // Name (Year Author)
