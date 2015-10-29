@@ -8,6 +8,8 @@ namespace Visio2Machine
 {
 	public static class Extensions
 	{
+		public static string fmt(this string s, params object[] oo) { return string.Format(s, oo); }
+
 		public static TResult with<TSource, TResult>(this TSource source, Func<TSource, TResult> func)
 		where TSource : class
 		{

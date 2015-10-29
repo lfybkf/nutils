@@ -10,7 +10,7 @@ namespace Visio2Machine
 	class Visio
 	{
 		public string Error { get; private set; }
-		private string File;
+		private string fileName;
 		public string Name { get; private set; }
 		
 		Application app;
@@ -19,7 +19,11 @@ namespace Visio2Machine
 
 		public Visio(string file)
 		{
-			this.File = file;
+			if (string.IsNullOrWhiteSpace(System.IO.Path.GetDirectoryName(file)))
+				this.fileName = System.IO.Path.Combine(Environment.CurrentDirectory, file);
+			else
+				this.fileName = file;
+
 			this.Name = System.IO.Path.GetFileNameWithoutExtension(file);
 		}//constructor
 
@@ -30,12 +34,13 @@ namespace Visio2Machine
 				app = new Application();
 				app.Visible = false;
 				//doc = app.Documents.OpenEx(File, (short)VisOpenSaveArgs.visOpenCopy);
-				doc = app.Documents.Open(File);
+				doc = app.Documents.Open(fileName);
 				page = doc.Pages[1]; 
 			}//try
 			catch (Exception exception)
 			{
-				Error = exception.Message;
+				Error = "File={0}, Exc={1}".fmt(System.IO.Path.GetDirectoryName(fileName), exception.Message);
+				Close();
 				return false;				
 			}//catch
 			
