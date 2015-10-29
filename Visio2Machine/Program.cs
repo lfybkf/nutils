@@ -13,8 +13,20 @@ namespace Visio2Machine
 			if (args.Length < 1) { Console.WriteLine("Usage: exe file.vsd"); return; }
 			string input = args[0];
 
-
-
+			Visio V = new Visio(input);
+			if (V.Open())
+			{
+				
+			}//if
+			else
+			{
+				Console.WriteLine(V.Error);
+				Console.ReadKey();
+			}//else
 		}//function
 	}//class
 }//ns
+
+/*
+ http://www.codeproject.com/Articles/109558/Creating-VISIO-Organigrams-using-C
+ */
