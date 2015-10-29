@@ -169,6 +169,8 @@ namespace FileNameEdit
 			Ret.makeNewFromContent = Ret.makeNewBook;
 			Ret.Extensions.Add(".chm");
 			Ret.Extensions.Add(".djvu");
+			Ret.Extensions.Add(".doc");
+			Ret.Extensions.Add(".docx");
 			Ret.Extensions.Add(".epub");
 			Ret.Extensions.Add(".mobi");
 			Ret.Extensions.Add(".pdf"); 
