@@ -90,6 +90,22 @@ namespace FileNameEdit
 				New = Name;
 		}//function
 
+		public void makeNewAudio()
+		{
+			string Author = content.getValue("Author");
+			string Name = content.getValue("Name");
+			string Nomer = content.getValue("Nomer");
+			Nomer = Nomer == null ? null : Nomer.PadLeft(3, '0').Substring(1);
+			if (AllExists(Author, Nomer, Name))
+				New = "{0} - {1} - {2}".fmt(Author, Nomer, Name);
+			else if (AllExists(Nomer, Name))
+				New = "{0} - {1}".fmt(Nomer, Name);
+			else if (AllExists(Author, Name))
+				New = "{0} - {1}".fmt(Author, Name);
+			else if (AllExists(Name))
+				New = Name;
+		}//function
+
 		public static bool AllExists(params string[] ss)
 		{
 			return ss.All(val => string.IsNullOrWhiteSpace(val) == false);
@@ -219,6 +235,27 @@ namespace FileNameEdit
 
 			return Ret;
 		}//function
+
+		public static Chooser createAudio()
+		{
+			Chooser Ret = new Chooser();
+			Ret.frm = new frmAudio(); Ret.frm.setChooser(Ret);
+			Ret.makeNewFromContent = Ret.makeNewAudio;
+			Ret.Extensions.Add(".mp3");
+			Ret.Extensions.Add(".flac");
+			Ret.Extensions.Add(".ape");
+			#region Regex
+			Ret.rexs.Add(new Regex(@"(?<Author>.*) - (?<Nomer>[0-9]{1,3}) - (?<Name>.*)")); // Author - Nomer - Name
+			Ret.rexs.Add(new Regex(@"(?<Nomer>[0-9]{1,3}) - (?<Name>.*)")); // Nomer - Name
+			Ret.rexs.Add(new Regex(@"(?<Nomer>[0-9]{1,3})[.] (?<Name>.*)")); // Nomer. Name
+			Ret.rexs.Add(new Regex(@"(?<Nomer>[0-9]{1,3}) (?<Name>.*)")); // Nomer Name
+			Ret.rexs.Add(new Regex(@"(?<Author>.*) - (?<Name>.*)")); // Author - Name
+			#endregion
+
+			return Ret;
+		}//function
+
+	
 	}//class
 	//(Action)typeof(Chooser).GetMethod(Ret.frm.GetType().Name.regOne("frm(.*)").setTo("makeNew{0}")).CreateDelegate(typeof(Action))
 }//ns

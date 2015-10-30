@@ -110,7 +110,7 @@
 			this.ctlName.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.ctlName.Location = new System.Drawing.Point(177, 3);
 			this.ctlName.Name = "ctlName";
-			this.ctlName.Size = new System.Drawing.Size(481, 37);
+			this.ctlName.Size = new System.Drawing.Size(481, 31);
 			this.ctlName.TabIndex = 1;
 			// 
 			// ctlAuthor
@@ -118,7 +118,7 @@
 			this.ctlAuthor.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.ctlAuthor.Location = new System.Drawing.Point(177, 36);
 			this.ctlAuthor.Name = "ctlAuthor";
-			this.ctlAuthor.Size = new System.Drawing.Size(481, 37);
+			this.ctlAuthor.Size = new System.Drawing.Size(481, 31);
 			this.ctlAuthor.TabIndex = 2;
 			// 
 			// ctlYear
@@ -126,12 +126,12 @@
 			this.ctlYear.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.ctlYear.Location = new System.Drawing.Point(177, 69);
 			this.ctlYear.Name = "ctlYear";
-			this.ctlYear.Size = new System.Drawing.Size(481, 37);
+			this.ctlYear.Size = new System.Drawing.Size(481, 31);
 			this.ctlYear.TabIndex = 3;
 			// 
 			// frmBook
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(15F, 30F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(661, 134);
 			this.Controls.Add(this.tableLayoutPanel1);
