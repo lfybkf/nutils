@@ -22,8 +22,8 @@ namespace FileNameEdit
 			btnOK.TabIndex = 100;
 
 			#region Events
-			ctlName.setRusLanguageOnEnter();
-			ctlAuthor.setRusLanguageOnEnter();
+			//ctlName.setRusLanguageOnEnter();
+			//ctlAuthor.setRusLanguageOnEnter();
 			this.Load += frm_Load;
 			btnOK.Click += (s, e) => { Finish(true); };
 			ctlName.KeyUp += ctl_KeyUp;

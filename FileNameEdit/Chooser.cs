@@ -247,6 +247,7 @@ namespace FileNameEdit
 			#region Regex
 			Ret.rexs.Add(new Regex(@"(?<Author>.*) - (?<Nomer>[0-9]{1,3}) - (?<Name>.*)")); // Author - Nomer - Name
 			Ret.rexs.Add(new Regex(@"(?<Nomer>[0-9]{1,3}) - (?<Name>.*)")); // Nomer - Name
+			Ret.rexs.Add(new Regex(@"(?<Nomer>[0-9]{1,3})-(?<Name>.*)")); // Nomer-Name
 			Ret.rexs.Add(new Regex(@"(?<Nomer>[0-9]{1,3})[.] (?<Name>.*)")); // Nomer. Name
 			Ret.rexs.Add(new Regex(@"(?<Nomer>[0-9]{1,3}) (?<Name>.*)")); // Nomer Name
 			Ret.rexs.Add(new Regex(@"(?<Author>.*) - (?<Name>.*)")); // Author - Name

@@ -16,7 +16,9 @@ namespace Visio2Machine
 			Visio V = new Visio(input);
 			if (V.Open())
 			{
-				V.Close();	
+				V.PrintStat();
+				V.Close();
+				Console.ReadKey();
 			}//if
 			else
 			{
