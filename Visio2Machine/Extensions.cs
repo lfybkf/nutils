@@ -1,14 +1,64 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IVisio = Microsoft.Office.Interop.Visio;
 
 namespace Visio2Machine
 {
 	public static class Extensions
 	{
 		public static string fmt(this string s, params object[] oo) { return string.Format(s, oo); }
+		public static bool notEmpty(this string s) { return !string.IsNullOrWhiteSpace(s); }
+		
+		public static string after(this string s, string Prefix)
+		{
+			int i = s.IndexOf(Prefix);
+			if (i >= 0)
+				return s.Substring(i + Prefix.Length);
+			else
+				return string.Empty;
+		}//func
+
+		public static string before(this string s, string Suffix)
+		{
+			int i = s.IndexOf(Suffix);
+			if (i > 0)
+				return s.Substring(0, i);
+			else
+				return string.Empty;
+		}//func
+
+		public static string midst(this string s, string Prefix, string Suffix)
+		{
+			int iPrefix = s.IndexOf(Prefix);
+			int iSuffix = s.IndexOf(Suffix);
+			if (iPrefix >= 0 && iSuffix > 0)
+				return s.Substring(iPrefix + Prefix.Length, iSuffix - iPrefix - Prefix.Length);
+			else if (iPrefix >= 0)
+				return s.Substring(iPrefix + Prefix.Length);
+			else if (iSuffix >= 0)
+				return s.Substring(0, iSuffix);
+			else
+				return string.Empty;
+		}//func
+
+
+		public static void writeToFile(this IEnumerable<string> ss, string file, bool append = true) 
+		{ 
+			
+			if (append)
+			{
+				File.AppendAllLines(file, ss, Encoding.Default);
+			}//if
+			else
+			{
+				File.WriteAllLines(file, ss, Encoding.Default);
+			}//else
+			
+		}//function
 
 		public static TResult with<TSource, TResult>(this TSource source, Func<TSource, TResult> func)
 		where TSource : class
@@ -62,6 +112,30 @@ namespace Visio2Machine
 		{
 			return dict.ContainsKey(key) ? dict[key] : defaultValue;
 		}//function
+
+		public static string CellResult(this IVisio.Shape shape, string name)
+		{
+			short i = shape.CellExistsU[name, 0];
+			if (i > 0)
+			{
+				return shape.CellsU[name].get_ResultStr(IVisio.VisUnitCodes.visNoCast);
+			}//if
+			else
+				return null;
+		}//func
+
+		public static string CellFormula(this IVisio.Shape shape, string name)
+		{
+			//return shape.CellsU[name].FormulaU;
+
+			short i = shape.CellExistsU[name, 0];
+			if (i != 0)
+			{
+				return shape.CellsU[name].FormulaU;
+			}//if
+			else
+				return null;
+		}//func
 	}//class
 
 }

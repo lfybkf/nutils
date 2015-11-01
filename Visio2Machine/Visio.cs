@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Office.Interop.Visio;
@@ -13,8 +14,15 @@ namespace Visio2Machine
 		private string fileName;
 		public string Name { get; private set; }
 
-		Action<object> line = Console.WriteLine;
-		
+		Action<object> line = (s) => { output.Add(s.ToString()); };
+		static List<string> output = new List<string>();
+		static string outputFile = "output.log";
+
+		List<ShInfo> shapes = new List<ShInfo>();
+		IEnumerable<ShInfo> states { get { return shapes.Where(s => s.shType == ShType.State); } }
+		IEnumerable<ShInfo> transitions { get { return shapes.Where(s => s.shType == ShType.Transition); } }
+		ShInfo getOnID(string aID) {return shapes.Find(sh => sh.ID == aID);}
+
 		Application app;
 		Document doc;
 		Page page; 
@@ -31,41 +39,29 @@ namespace Visio2Machine
 
 		public void PrintStat()
 		{
-			line("Connects = {0}".fmt(page.Connects.Count));
-			foreach (Connect item in page.Connects)
-			{
-				line("from {0} to {1}".fmt((item.FromSheet as Shape).with(s => s.Name, "no shape"), (item.ToSheet as Shape).with(s => s.Name, "no shape")));
-			}
+			line("states");
+			states.forEach(s => line("\t{0}".fmt(s)));
 
-			line("Shapes = {0}".fmt(page.Shapes.Count));
-			ShapeInfo si = null;
-			foreach (Shape item in page.Shapes) {
-				si = ShapeInfo.Fill(item);
-				line("Name={0}, Text={1}, Type={2}".fmt(si.Name, si.Text));
-			}//for
+			line("transitions");
+			transitions.forEach(s => line("\t{0}".fmt(s)));
+
+			output.writeToFile(outputFile);
 		}//function
 
 		public bool Open()
 		{
-			try
-			{
-				app = new Application();
-				app.Visible = false;
-				doc = app.Documents.OpenEx(fileName, (short)VisOpenSaveArgs.visOpenRO);
-				//doc = app.Documents.Open(fileName);
-				page = doc.Pages[1];
+			app = new Application();
+			app.Visible = false;
+			doc = app.Documents.OpenEx(fileName, (short)VisOpenSaveArgs.visOpenRO);
+			page = doc.Pages[1];
 
-
-				
-			}//try
-			catch (Exception exception)
+			ShInfo.line = line;
+			foreach (Shape item in page.Shapes)
 			{
-				Error = "File={0}, Exc={1}".fmt(System.IO.Path.GetDirectoryName(fileName), exception.Message);
-				Close();
-				return false;				
-			}//catch
-			
-			//application.Documents.OpenEx(File,((short)Microsoft.Office.Interop.Visio.VisOpenSaveArgs.visOpenDocked + (short)Microsoft.Office.Interop.Visio.VisOpenSaveArgs.visOpenRO));
+				shapes.Add(new ShInfo().FillFrom(item));
+			}//for
+			shapes.forEach(z => z.DoConnector(shapes));
+			shapes.forEach(z => z.DoShape(shapes));
 			return true;
 		}//function
 
@@ -75,5 +71,96 @@ namespace Visio2Machine
 			app.execute(z => z.Quit());
 			return true;
 		}//function
+
+		public void ExportMachine()
+		{
+			#region header
+string dtd = @"
+	<!ELEMENT ROOT (Machine+)>
+	<!ELEMENT Machine (Comment*, State+, Transition+, Push+, Check*, Act*, Device*)>
+		<!ATTLIST Machine Name ID #REQUIRED>
+		<!ATTLIST Machine Info CDATA #IMPLIED>
+	<!ELEMENT State (Comment*)>
+		<!ATTLIST State Name ID #REQUIRED>
+		<!ATTLIST State Enter CDATA #IMPLIED>
+		<!ATTLIST State Exit CDATA #IMPLIED>
+		<!ATTLIST State Info CDATA #IMPLIED>
+		<!ATTLIST State Visio CDATA #IMPLIED>
+	<!ELEMENT Transition (Comment*)>
+		<!ATTLIST Transition From CDATA #REQUIRED>
+		<!ATTLIST Transition To CDATA #REQUIRED>
+		<!ATTLIST Transition Pushes CDATA #REQUIRED>
+		<!ATTLIST Transition Checks CDATA #IMPLIED>
+		<!ATTLIST Transition Acts CDATA #IMPLIED>
+		<!ATTLIST Transition Info CDATA #IMPLIED>
+		<!ATTLIST Transition Visio CDATA #IMPLIED>
+	<!ELEMENT Check (Comment*)>
+		<!ATTLIST Check Name ID #REQUIRED>
+		<!ATTLIST Check Info CDATA #IMPLIED>
+		<!ATTLIST Check Device CDATA #IMPLIED>
+		<!ATTLIST Check Test CDATA #IMPLIED>
+	<!ELEMENT Act (Comment*)>
+		<!ATTLIST Act Name ID #REQUIRED>
+		<!ATTLIST Act Info CDATA #IMPLIED>
+		<!ATTLIST Act Device CDATA #IMPLIED>
+		<!ATTLIST Act Change CDATA #IMPLIED>
+	<!ELEMENT Push (Comment*)>
+		<!ATTLIST Push Name ID #REQUIRED>
+		<!ATTLIST Push Info CDATA #IMPLIED>
+	<!ELEMENT Device (Comment*)>
+		<!ATTLIST Device Name ID #REQUIRED>
+		<!ATTLIST Device Type CDATA #REQUIRED>
+		<!ATTLIST Device Getter CDATA #IMPLIED>
+		<!ATTLIST Device Info CDATA #IMPLIED>
+	<!ELEMENT Comment (#PCDATA)>
+		<!ATTLIST Comment Author CDATA #REQUIRED>
+";
+			#endregion
+
+#region functions
+Func<ShInfo, XElement> makeState = (sh) =>
+{
+	line("export State {0}".fmt(sh.ID));
+	return new XElement(R.STATE,
+		new XAttribute(R.NAME, sh.Name));
+};
+
+Func<string, XElement> makePush = (s) =>
+{
+	line("export Push {0}".fmt(s));
+	return new XElement(R.PUSH, new XAttribute(R.NAME, s));
+};
+
+Func<ShInfo, XElement> makeTransition = (sh) =>
+{
+	line("export Transition {0}".fmt(sh.ID));
+	string[] ss = sh.Text.Split(Environment.NewLine.ToCharArray());
+	return new XElement(R.TRANSITION
+		, new XAttribute(R.FROM, getOnID(sh.From).Name)
+		, new XAttribute(R.TO, getOnID(sh.To).Name)
+		, new XAttribute(R.Pushes, ss[0])
+		);
+};
+#endregion
+
+			#region xml
+			XDeclaration xdecl = new XDeclaration("1.0", "utf-8", "yes");
+			XDocumentType xdtd = new XDocumentType("ROOT", null, null, dtd);
+			XDocument xdoc = new XDocument(xdecl, xdtd);
+			XElement xroot = new XElement("ROOT",
+				new XElement(R.MACHINE
+					, states.Select(makeState)
+					, transitions.Select(makeTransition)
+					, transitions.SelectMany(tr => tr.pushes).Distinct().Select(makePush)
+					, new XAttribute(R.NAME, Name)
+				)
+			);
+
+			xdoc.Add(xroot);
+			#endregion
+
+			xdoc.Save("Machine{0}.xml".fmt(Name));
+		}//function
+
 	}//class
 }//ns

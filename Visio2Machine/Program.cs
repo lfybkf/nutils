@@ -14,17 +14,28 @@ namespace Visio2Machine
 			string input = args[0];
 
 			Visio V = new Visio(input);
-			if (V.Open())
+			try
+			{
+				V.Open();
+			}
+			catch (Exception exc)
+			{
+				(new[] { V.Error, exc.Message }).writeToFile("output.log");
+			}
+			finally
+			{
+				V.Close();
+			}
+
+			try
 			{
 				V.PrintStat();
-				V.Close();
-				Console.ReadKey();
-			}//if
-			else
+				V.ExportMachine();
+			}//try
+			catch (Exception exc)
 			{
-				Console.WriteLine(V.Error);
-				Console.ReadKey();
-			}//else
+				(new[] { V.Error, exc.Message }).writeToFile("output.log");				
+			}//catch
 		}//function
 	}//class
 }//ns
