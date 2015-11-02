@@ -12,9 +12,12 @@ namespace Visio2Machine
 	{
 		public static string fmt(this string s, params object[] oo) { return string.Format(s, oo); }
 		public static bool notEmpty(this string s) { return !string.IsNullOrWhiteSpace(s); }
-		
+		public static bool isEmpty(this string s) { return string.IsNullOrWhiteSpace(s); }
+		public static string[] splitLine(this string s) { return s.Split(Environment.NewLine.ToCharArray()); }
+		public static IEnumerable<string> splitValue(this string s) { return s.Split(' ', ',').Where(z => z.notEmpty()); }
 		public static string after(this string s, string Prefix)
 		{
+			if (s.isEmpty()) return string.Empty;
 			int i = s.IndexOf(Prefix);
 			if (i >= 0)
 				return s.Substring(i + Prefix.Length);
@@ -24,6 +27,7 @@ namespace Visio2Machine
 
 		public static string before(this string s, string Suffix)
 		{
+			if (s.isEmpty()) return string.Empty;
 			int i = s.IndexOf(Suffix);
 			if (i > 0)
 				return s.Substring(0, i);
@@ -33,6 +37,7 @@ namespace Visio2Machine
 
 		public static string midst(this string s, string Prefix, string Suffix)
 		{
+			if (s.isEmpty()) return string.Empty;
 			int iPrefix = s.IndexOf(Prefix);
 			int iSuffix = s.IndexOf(Suffix);
 			if (iPrefix >= 0 && iSuffix > 0)
@@ -48,7 +53,6 @@ namespace Visio2Machine
 
 		public static void writeToFile(this IEnumerable<string> ss, string file, bool append = true) 
 		{ 
-			
 			if (append)
 			{
 				File.AppendAllLines(file, ss, Encoding.Default);
@@ -93,6 +97,15 @@ namespace Visio2Machine
 			return source;
 		}//function
 
+		public static T get<T>(this IEnumerable<T> source, int index, T defValue) where T:class
+		{
+			if (source == null)
+				return defValue;
+
+			T result = source.ElementAtOrDefault(index);
+			return result ?? defValue;
+		}//function
+
 		/// <summary>
 		/// вертает Value или default(TValue)
 		/// </summary>
@@ -112,6 +125,7 @@ namespace Visio2Machine
 		{
 			return dict.ContainsKey(key) ? dict[key] : defaultValue;
 		}//function
+
 
 		public static string CellResult(this IVisio.Shape shape, string name)
 		{
