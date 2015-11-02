@@ -15,23 +15,25 @@ namespace Visio2Machine
 	class ShInfo
 	{
 		internal static Action<string> line;
+		static string sign = "-";
 
-		internal string ID, Name, Text, From, To, Device, Getter, Type, Test, Change, Checks, Acts, Pushes;
+		internal string ID, Name, Text, From, To, Device, Getter, Type, Pushes, Expr;
+		string[] Checks, Acts;
 		internal ShType shType { get; private set; }
 
 		internal bool IsConnector { get { return ID.StartsWith(R.DynamicСonnector); } }
 		private bool IsState { get { return ID.StartsWith(R.Rectangle); } }
 		private bool IsDevice { get { return ID.StartsWith(R.Ellipse); } }
-		private bool IsActOrCheck { get { return ID.StartsWith(R.Diamonde); } }
+		private bool IsActOrCheck { get { return ID.StartsWith(R.Diamond); } }
 		
 		internal IEnumerable<string> pushes { get { return Pushes.splitValue(); } }
-		internal IEnumerable<string> acts { get { return Pushes.splitValue(); } }
-		internal IEnumerable<string> checks { get { return Pushes.splitValue(); } }
+		internal IEnumerable<string> acts { get { return Acts; } }
+		internal IEnumerable<string> checks { get { return Checks; } }
 
 		public ShInfo()
 		{
 			shType = ShType.NONE;
-			set(string.Empty, ID, Name, Text, From, To, Device, Getter, Type, Test, Change, Checks, Acts, Pushes);
+			set(string.Empty, ID, Name, Text, From, To, Device, Getter, Type, Pushes, Expr);
 		}//constructor
 
 		private void set(string value, params string[] list) { list.forEach(s => s = value); }
@@ -66,19 +68,21 @@ namespace Visio2Machine
 			{
 				shType = ShType.Transition;
 				Pushes = ss.get(0, string.Empty);
-				Checks = ss.FirstOrDefault(z => z.StartsWith(R.CHECK)).midst(R.CHECK + "(", ")");
-				Acts = ss.FirstOrDefault(z => z.StartsWith(R.ACT)).midst(R.ACT + "(", ")");
+				Checks = ss.Skip(1).Where(z => z.StartsWith(sign)).Select(z => z.after(sign)).ToArray();
+				Acts = ss.Skip(1).Where(z => !z.StartsWith(sign)).ToArray();
 			}//if
 			else if (Get(shapes, From).IsActOrCheck && Get(shapes, To).IsDevice)
 			{
 				shType = ShType.Change;
-				Change = ss.get(0, string.Empty);
+				Name = ss.get(0, string.Empty);
 			}//if
 			else if (Get(shapes, From).IsDevice && Get(shapes, To).IsActOrCheck)
 			{
 				shType = ShType.Test;
-				Test = ss.get(0, string.Empty);
+				Name = ss.get(0, string.Empty);
 			}//if
+
+			line("\t resolved as {0}".fmt(shType));
 		}//function
 
 		internal void DoShape(IEnumerable<ShInfo> shapes)
@@ -104,17 +108,25 @@ namespace Visio2Machine
 			else if (IsActOrCheck)
 			{
 				Name = ss[0];
-				var setters = shapes.Where(z => z.shType == ShType.Change);
-				var getters = shapes.Where(z => z.shType == ShType.Test);
-				if (setters.Any(z => z.From == ID))
+				var change = shapes.FirstOrDefault(z => z.shType == ShType.Change && z.From == ID);
+				var test = shapes.FirstOrDefault(z => z.shType == ShType.Test && z.To == ID);
+				if (change != null)
 				{
 					shType = ShType.Act;
+					Expr = change.Name;
+					var deviceID = change.To;
+					Device = shapes.FirstOrDefault(z => z.IsDevice && z.ID == deviceID).Name;
 				}//if
-				else if (getters.Any(z => z.To == ID))
+				else if (test != null)
 				{
 					shType = ShType.Check;
+					Expr = test.Name;
+					var deviceID = test.From;
+					Device = shapes.FirstOrDefault(z => z.IsDevice && z.ID == deviceID).Name;
 				}//if
 			}//if
+
+			line("\t resolved as {0}".fmt(shType));
 		}//function
 
 		public override string ToString()
@@ -131,9 +143,13 @@ namespace Visio2Machine
 			{
 				return "test {0}.{1}".fmt(From, To);
 			}//if
+			else if (shType == ShType.Device)
+			{
+				return "[{0}] {1} {2}".fmt(ID, Type, Name);
+			}//if
 			else
 			{
-				return "{0} {1}".fmt(ID, Text);
+				return "[{0}] {1}".fmt(ID, Name);
 			}//else
 		}
 	}//class

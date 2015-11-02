@@ -53,6 +53,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Dialog.vsd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Dialog.vsdx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

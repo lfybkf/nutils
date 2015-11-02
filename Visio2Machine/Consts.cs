@@ -9,7 +9,7 @@ namespace Visio2Machine
 	public class R
 	{
 		public const string DynamicСonnector = "Dynamic connector";
-		public const string Diamonde = "Diamonde";
+		public const string Diamond = "Diamond";
 		public const string Ellipse = "Ellipse";
 		public const string Rectangle = "Rectangle";
 		public const string BegTrigger = "BegTrigger";

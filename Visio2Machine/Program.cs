@@ -39,7 +39,3 @@ namespace Visio2Machine
 		}//function
 	}//class
 }//ns
-
-/*
- http://www.codeproject.com/Articles/109558/Creating-VISIO-Organigrams-using-C
- */

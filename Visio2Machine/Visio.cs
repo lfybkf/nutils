@@ -44,8 +44,9 @@ namespace Visio2Machine
 
 		public void PrintStat()
 		{
+			line("BEG PrintStat");
 			this.shapes.OrderBy(sh => sh.shType).forEach(sh => line("{0}\t{1}".fmt(sh.shType, sh.ToString())));
-
+			line("END PrintStat");
 			output.writeToFile(outputFile);
 		}//function
 
@@ -68,8 +69,8 @@ namespace Visio2Machine
 
 		public bool Close()
 		{
-			doc.execute(d => d.Close());
-			app.execute(z => z.Quit());
+			doc.execute(d => { d.Close(); }); //line(d.Name + " is closed");
+			app.execute(z => { z.Quit(); }); //line("App is closed");
 			return true;
 		}//function
 
@@ -86,7 +87,7 @@ string dtd = @"
 		<!ATTLIST State Enter CDATA #IMPLIED>
 		<!ATTLIST State Exit CDATA #IMPLIED>
 		<!ATTLIST State Info CDATA #IMPLIED>
-		<!ATTLIST State Visio CDATA #IMPLIED>
+		<!ATTLIST State ID CDATA #IMPLIED>
 	<!ELEMENT Transition (Comment*)>
 		<!ATTLIST Transition From CDATA #REQUIRED>
 		<!ATTLIST Transition To CDATA #REQUIRED>
@@ -94,17 +95,19 @@ string dtd = @"
 		<!ATTLIST Transition Checks CDATA #IMPLIED>
 		<!ATTLIST Transition Acts CDATA #IMPLIED>
 		<!ATTLIST Transition Info CDATA #IMPLIED>
-		<!ATTLIST Transition Visio CDATA #IMPLIED>
+		<!ATTLIST Transition ID CDATA #IMPLIED>
 	<!ELEMENT Check (Comment*)>
 		<!ATTLIST Check Name ID #REQUIRED>
 		<!ATTLIST Check Info CDATA #IMPLIED>
 		<!ATTLIST Check Device CDATA #IMPLIED>
 		<!ATTLIST Check Test CDATA #IMPLIED>
+		<!ATTLIST Check ID CDATA #IMPLIED>
 	<!ELEMENT Act (Comment*)>
 		<!ATTLIST Act Name ID #REQUIRED>
 		<!ATTLIST Act Info CDATA #IMPLIED>
 		<!ATTLIST Act Device CDATA #IMPLIED>
 		<!ATTLIST Act Change CDATA #IMPLIED>
+		<!ATTLIST Act ID CDATA #IMPLIED>
 	<!ELEMENT Push (Comment*)>
 		<!ATTLIST Push Name ID #REQUIRED>
 		<!ATTLIST Push Info CDATA #IMPLIED>
@@ -113,6 +116,7 @@ string dtd = @"
 		<!ATTLIST Device Type CDATA #REQUIRED>
 		<!ATTLIST Device Getter CDATA #IMPLIED>
 		<!ATTLIST Device Info CDATA #IMPLIED>
+		<!ATTLIST Device ID CDATA #IMPLIED>
 	<!ELEMENT Comment (#PCDATA)>
 		<!ATTLIST Comment Author CDATA #REQUIRED>
 ";
@@ -135,8 +139,8 @@ Func<ShInfo, XElement> makeTransition = (sh) =>
 		, new XAttribute(R.FROM, getOnID(sh.From).Name)
 		, new XAttribute(R.TO, getOnID(sh.To).Name)
 		, new XAttribute(R.Pushes, sh.Pushes)
-		, new XAttribute(R.Checks, sh.Checks)
-		, new XAttribute(R.Acts, sh.Acts)
+		, new XAttribute(R.Checks, string.Join(" ", sh.checks))
+		, new XAttribute(R.Acts, string.Join(" ", sh.acts))
 		, new XAttribute(R.ID, sh.ID)
 		);
 };
@@ -150,36 +154,37 @@ Func<string, XElement> makePush = (s) =>
 Func<ShInfo, XElement> makeDevice = (sh) =>
 {
 	line("export Device {0}".fmt(sh.ID));
-	return new XElement(R.DEVICE
+	XElement result = new XElement(R.DEVICE
 		, new XAttribute(R.NAME, sh.Name)
+		, new XAttribute(R.TYPE, sh.Type)
 		, new XAttribute(R.ID, sh.ID)
 		);
+	if (sh.Getter.notEmpty()) { result.Add(new XAttribute(R.GETTER, sh.Getter)); }
+	return result;
 };
 
 Func<ShInfo, XElement> makeAct = (sh) =>
 {
 	line("export Act {0}".fmt(sh.ID));
-	var change = changes.FirstOrDefault(z => z.From == sh.ID);
-	string deviceID = change.with(z => z.To);
-	return new XElement(R.ACT
+	XElement result = new XElement(R.ACT
 		, new XAttribute(R.NAME, sh.Name)
-		, new XAttribute(R.DEVICE, devices.FirstOrDefault(d => d.ID == deviceID))
-		, new XAttribute(R.CHANGE, change.with(z => z.Name))
+		, new XAttribute(R.DEVICE, sh.Device)
 		, new XAttribute(R.ID, sh.ID)
 		);
+	if (sh.Expr.notEmpty()) { result.Add(new XAttribute(R.CHANGE, sh.Expr)); }
+	return result;
 };
 
 Func<ShInfo, XElement> makeCheck = (sh) =>
 {
 	line("export Check {0}".fmt(sh.ID));
-	var change = changes.FirstOrDefault(z => z.To == sh.ID);
-	string deviceID = change.with(z => z.From);
-	return new XElement(R.ACT
+	XElement result = new XElement(R.CHECK
 		, new XAttribute(R.NAME, sh.Name)
-		, new XAttribute(R.DEVICE, devices.FirstOrDefault(d => d.ID == deviceID))
-		, new XAttribute(R.TEST, change.with(z => z.Name))
+		, new XAttribute(R.DEVICE, sh.Device)
 		, new XAttribute(R.ID, sh.ID)
 		);
+	if (sh.Expr.notEmpty()) { result.Add(new XAttribute(R.TEST, sh.Expr)); }
+	return result;
 };
 
 #endregion
@@ -193,9 +198,9 @@ Func<ShInfo, XElement> makeCheck = (sh) =>
 					, states.Select(makeState)
 					, transitions.Select(makeTransition)
 					, transitions.SelectMany(tr => tr.pushes).Distinct().Select(makePush)
-					, devices.Select(makeDevice)
-					, acts.Select(makeAct)
 					, checks.Select(makeCheck)
+					, acts.Select(makeAct)
+					, devices.Select(makeDevice)
 					, new XAttribute(R.NAME, Name)
 				)
 			);
