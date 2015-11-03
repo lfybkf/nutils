@@ -1,0 +1,8 @@
+Device;dev1;DevOne;new Type()
+Device;dev2;DevTwo;new Type()
+;;;
+Check;IsOK;dev2;IsOK
+Check;IsOnline;dev1;IsOnline
+;;;
+Act;Connect;dev1;IsOnline=true
+Act;Disconnect;dev1;IsOnline=false

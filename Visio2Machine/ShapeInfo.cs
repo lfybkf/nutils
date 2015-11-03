@@ -16,6 +16,7 @@ namespace Visio2Machine
 	{
 		internal static Action<string> line;
 		static string sign = "-";
+		static int csvID = 0;
 
 		internal string ID, Name, Text, From, To, Device, Getter, Type, Pushes, Expr;
 		string[] Checks, Acts;
@@ -48,6 +49,38 @@ namespace Visio2Machine
 				From = shape.CellFormula(R.BegTrigger).midst("(", "!");
 				To = shape.CellFormula(R.EndTrigger).midst("(", "!");
 			}//if
+			return this;
+		}//function
+
+		internal ShInfo FillFrom(string csv)
+		{
+			string[] ss = csv.splitCSV();
+			string What = ss.get(0, string.Empty);
+			if (What.isEmpty()) { shType = ShType.NONE; return this; }
+			ID = "{0}_{1}".fmt(What, csvID++);
+			line("parsing csv {0}".fmt(ID));
+			if (What == R.DEVICE)
+			{
+				shType = ShType.Device;
+				Name = ss.get(1, string.Empty);
+				Type = ss.get(2, string.Empty);
+				Getter = ss.get(3, string.Empty);
+			}//if
+			else if (What == R.ACT)
+			{
+				shType = ShType.Act;
+				Name = ss.get(1, string.Empty);
+				Device = ss.get(2, string.Empty);
+				Expr = ss.get(3, string.Empty);
+			}//if
+			else if (What == R.CHECK)
+			{
+				shType = ShType.Check;
+				Name = ss.get(1, string.Empty);
+				Device = ss.get(2, string.Empty);
+				Expr = ss.get(3, string.Empty);
+			}//if
+			else {shType = ShType.NONE;}
 			return this;
 		}//function
 

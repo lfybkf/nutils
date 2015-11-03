@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Office.Interop.Visio;
+using System.IO;
 
 namespace Visio2Machine
 {
@@ -62,6 +63,26 @@ namespace Visio2Machine
 			{
 				shapes.Add(new ShInfo().FillFrom(item));
 			}//for
+
+			#region csv
+			string fileCSV = "{0}.csv".fmt(Name); 
+			if (File.Exists(fileCSV))
+			{
+				ShInfo shCSV;
+				line("BEG parsing csvFile {0}".fmt(fileCSV));
+				var linesCSV = File.ReadAllLines(fileCSV);
+				foreach (var item in linesCSV)
+				{
+					shCSV = new ShInfo().FillFrom(item);
+					if (shCSV.shType != ShType.NONE)
+					{
+						shapes.Add(shCSV);
+					}//if
+				}//for
+				line("END parsing csvFile {0}".fmt(fileCSV));
+			}//if
+			#endregion
+
 			shapes.forEach(z => z.DoConnector(shapes));
 			shapes.forEach(z => z.DoShape(shapes));
 			return true;

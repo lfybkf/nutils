@@ -14,6 +14,7 @@ namespace Visio2Machine
 		public static bool notEmpty(this string s) { return !string.IsNullOrWhiteSpace(s); }
 		public static bool isEmpty(this string s) { return string.IsNullOrWhiteSpace(s); }
 		public static string[] splitLine(this string s) { return s.Split(Environment.NewLine.ToCharArray()); }
+		public static string[] splitCSV(this string s) { return s.Split(';'); }
 		public static IEnumerable<string> splitValue(this string s) { return s.Split(' ', ',').Where(z => z.notEmpty()); }
 		public static string after(this string s, string Prefix)
 		{
