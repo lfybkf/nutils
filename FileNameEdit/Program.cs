@@ -27,6 +27,9 @@ namespace FileNameEdit
 			string Old = args.First();
 			string Ext = Path.GetExtension(Old);
 
+			Chooser.ini = new Ini();
+			Chooser.ini.Load();
+
 			Chooser obj = chooses.First(c => c.IsMatch(Ext));
 			obj.Old = Path.GetFileNameWithoutExtension(Old);
 			Application.Run(obj.frm);
@@ -36,6 +39,8 @@ namespace FileNameEdit
 				string New = Path.Combine(Path.GetDirectoryName(Old), obj.New) + Ext;
 				File.Move(Old, New);
 			}//if
-		}
-	}
-}
+
+			Chooser.ini.Save();
+		}//function
+	}//class
+}//ns

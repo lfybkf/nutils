@@ -36,10 +36,16 @@ namespace move2dirOnBegin
 			}//if
 			
 			//move there
+			string pathNew = null;
 			foreach (var item in files)
 			{
+				pathNew = Path.Combine(sBegin, item);
+				if (File.Exists(pathNew))
+				{
+					continue;
+				}//if
 				Console.WriteLine(item);
-				File.Move(item, Path.Combine(sBegin, item));
+				File.Move(item, pathNew);
 			}//for
 
 			//Console.ReadLine();

@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace FileNameEdit
 {
@@ -15,7 +16,8 @@ namespace FileNameEdit
 		public static Chooser getChooser(this Form frm) { return (frm.Tag as Chooser); }//function
 		public static void setRusLanguageOnEnter(this TextBox tb)	{	tb.setLanguageOnEnter("ru-RU");	}//function
 		public static void setEngLanguageOnEnter(this TextBox tb) { tb.setLanguageOnEnter("en-US"); }//function
-		public static string KeyFromName(this TextBox tb) { return tb.Name.Substring(3); }//function
+		public static string KeyFromTB(this TextBox tb) { return tb.Name.Substring(3); }//function
+		public static void IniSet(this TextBox tb, bool b) { tb.BackColor = b ? Color.Wheat : Color.White ; }//function
 		public static string fmt(this string s, params string[] ss) { return string.Format(s, ss); }//function
 		public static string setTo(this string what, string where) { return string.Format(where, what); }//function
 
@@ -34,7 +36,7 @@ namespace FileNameEdit
 		public static string getValue(this IDictionary<string, string> dict, string key)
 		{
 			if (dict.ContainsKey(key))
-				return dict[key];
+				return dict[key].space();
 			else
 				return null;
 		}//function
@@ -51,5 +53,44 @@ namespace FileNameEdit
 		{
 			return ss.All(val => string.IsNullOrWhiteSpace(val) == false);
 		}//function
+
+		/// <summary>
+		/// заменяет разделители на пробелы
+		/// </summary>
+		/// <param name="s"></param>
+		/// <param name="ss"></param>
+		/// <returns></returns>
+		public static string space(this string s, string delims = ".,*_:;")
+		{
+			char[] cc = s.ToCharArray();
+			for (int i = 0; i < cc.Length; i++)
+			{
+				char c = cc[i];
+				if (delims.Contains(c))
+				{
+					cc[i] = ' ';
+				}//if
+			}//for
+			return new String(cc).Trim();
+		}//function
+
+		public static string after(this string s, string Prefix)
+		{
+			int i = s.IndexOf(Prefix);
+			if (i >= 0)
+				return s.Substring(i + Prefix.Length);
+			else
+				return string.Empty;
+		}//func
+
+		public static string before(this string s, string Suffix)
+		{
+			int i = s.IndexOf(Suffix);
+			if (i > 0)
+				return s.Substring(0, i);
+			else
+				return string.Empty;
+		}//func
+
 	}//class
 }//ns

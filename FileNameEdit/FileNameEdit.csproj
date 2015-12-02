@@ -76,6 +76,7 @@
     <Compile Include="frmVideo.Designer.cs">
       <DependentUpon>frmVideo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Ini.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="frmAudio.resx">

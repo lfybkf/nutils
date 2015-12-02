@@ -26,7 +26,6 @@ namespace FileNameEdit
 			ctlName.setRusLanguageOnEnter();
 			ctlAuthor.setRusLanguageOnEnter();
 			ctlSeria.setRusLanguageOnEnter();
-			this.Load += frm_Load;
 			btnOK.Click += (s, e) => { Finish(true); };
 			ctlName.KeyUp += ctl_KeyUp;
 			ctlAuthor.KeyUp += ctl_KeyUp;
@@ -57,15 +56,6 @@ namespace FileNameEdit
 			if (e.KeyCode == Keys.Enter) { Finish(true); } //if
 			else if (e.KeyCode == Keys.Escape) { Finish(false); }//else
 		}
-
-		private void frm_Load(object sender, EventArgs e)
-		{
-			Chooser obj = this.getChooser();
-			Text = obj.Old;
-
-			if (obj.Parse() == false)
-				ctlName.Text = obj.Old;
-		}//function
 
 	}//class
 }//ns

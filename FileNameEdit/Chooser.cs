@@ -11,6 +11,7 @@ namespace FileNameEdit
 {
 	public class Chooser
 	{
+		internal static Ini ini = null;
 		List<string> Extensions = new List<string>();
 		List<Regex> rexs = new List<Regex>();
 		IDictionary<string, string> content = new Dictionary<string, string>();
@@ -27,6 +28,8 @@ namespace FileNameEdit
 		{
 			//registr.Add(Tuple.Create("Video", frmVideo, makeNewBook));
 		}//function
+
+		//string getContentAndIni(string key)	{ return content.getValue(key) ?? ini[key];}
 
 		public void makeNewBook()
 		{
@@ -111,6 +114,21 @@ namespace FileNameEdit
 			return ss.All(val => string.IsNullOrWhiteSpace(val) == false);
 		}//function
 
+		void saveContentToIni()
+		{
+			foreach (var key in content.Keys)
+			{
+				if (string.IsNullOrWhiteSpace(content[key]) == false)
+				{
+					ini[key] = content[key];
+				}//if
+				else
+				{
+					;
+				}//else
+			}//for
+		}//function
+
 		/// <summary>
 		/// формировать New
 		/// </summary>
@@ -123,8 +141,9 @@ namespace FileNameEdit
 				if (string.IsNullOrWhiteSpace(tb.Text))
 					continue;
 
-				content.Add(tb.KeyFromName(), tb.Text);
+				content.Add(tb.KeyFromTB(), tb.Text);
 			}//for
+			saveContentToIni();
 			makeNewFromContent();
 		}//function
 
@@ -132,16 +151,36 @@ namespace FileNameEdit
 		{
 			Regex rex = rexs.FirstOrDefault(r => r.IsMatch(Old));
 
-			if (rex == null)
-				return false;
-
-			var names = rex.GetGroupNames().ToList();
-			Match m = rex.Match(Old);
-			names.ForEach(s => content.Add(s, m.Groups[s].Value.Trim()));
+			if (rex != null)
+			{
+				var names = rex.GetGroupNames().ToList();
+				Match m = rex.Match(Old);
+				names.ForEach(s => content.Add(s, m.Groups[s].Value.Trim()));
+			}
+			else
+			{
+				content.Add("Name", Old);
+			}//else
 
 			if (frm != null)
 			{
-				foreach (var tb in GetTextBoxes()) { tb.Text = content.getValue(tb.Name.Substring(3)) ?? string.Empty; }//for
+				string key, value;
+				foreach (var tb in GetTextBoxes()) 
+				{
+					key = tb.Name.Substring(3);
+					value = content.getValue(key);
+					if (value != null)
+					{
+						tb.Text = value;
+						tb.IniSet(false);
+					}//if
+					else
+					{
+						tb.Text = ini[key];
+						tb.IniSet(true);
+					}//else
+				}//for
+
 			}//if
 			return true;
 		}//function
@@ -162,7 +201,7 @@ namespace FileNameEdit
 		public static Chooser createVideo()
 		{
 			Chooser Ret = new Chooser();
-			Ret.frm = new frmVideo(); Ret.frm.setChooser(Ret);
+			Ret.frm = new frmVideo(); Ret.prepareForm();
 			Ret.makeNewFromContent = Ret.makeNewVideo;
 			Ret.Extensions.Add(".avi");
 			Ret.Extensions.Add(".flv");
@@ -181,7 +220,7 @@ namespace FileNameEdit
 		public static Chooser createBook()
 		{
 			Chooser Ret = new Chooser();
-			Ret.frm = new frmBook(); Ret.frm.setChooser(Ret);
+			Ret.frm = new frmBook(); Ret.prepareForm();
 			Ret.makeNewFromContent = Ret.makeNewBook;
 			Ret.Extensions.Add(".chm");
 			Ret.Extensions.Add(".djvu");
@@ -203,7 +242,7 @@ namespace FileNameEdit
 		public static Chooser createDistrib()
 		{
 			Chooser Ret = new Chooser();
-			Ret.frm = new frmDistrib(); Ret.frm.setChooser(Ret);
+			Ret.frm = new frmDistrib(); Ret.prepareForm();
 			Ret.makeNewFromContent = Ret.makeNewDistrib;
 			Ret.Extensions.Add(".exe");
 			Ret.Extensions.Add(".msi");
@@ -216,10 +255,23 @@ namespace FileNameEdit
 			return Ret;
 		}//function
 
+		void prepareForm()
+		{
+			frm.setChooser(this);
+			frm.Load += (object sender, EventArgs e) =>
+			{
+				Chooser obj = frm.getChooser();
+				frm.Text = obj.Old;
+				obj.Parse();
+			};
+		}//function
+
+
 		public static Chooser createLib()
 		{
 			Chooser Ret = new Chooser();
-			Ret.frm = new frmLib(); Ret.frm.setChooser(Ret);
+			Ret.frm = new frmLib();
+			Ret.prepareForm();
 			Ret.makeNewFromContent = Ret.makeNewLib;
 			Ret.Extensions.Add(".fb2");
 			Ret.Extensions.Add(".txt");
@@ -239,7 +291,7 @@ namespace FileNameEdit
 		public static Chooser createAudio()
 		{
 			Chooser Ret = new Chooser();
-			Ret.frm = new frmAudio(); Ret.frm.setChooser(Ret);
+			Ret.frm = new frmAudio(); Ret.prepareForm();
 			Ret.makeNewFromContent = Ret.makeNewAudio;
 			Ret.Extensions.Add(".mp3");
 			Ret.Extensions.Add(".flac");
@@ -248,6 +300,7 @@ namespace FileNameEdit
 			Ret.rexs.Add(new Regex(@"(?<Author>.*) - (?<Nomer>[0-9]{1,3}) - (?<Name>.*)")); // Author - Nomer - Name
 			Ret.rexs.Add(new Regex(@"(?<Nomer>[0-9]{1,3}) - (?<Name>.*)")); // Nomer - Name
 			Ret.rexs.Add(new Regex(@"(?<Nomer>[0-9]{1,3})-(?<Name>.*)")); // Nomer-Name
+			Ret.rexs.Add(new Regex(@"(?<Nomer>[0-9]{1,3})_(?<Name>.*)")); // Nomer_Name
 			Ret.rexs.Add(new Regex(@"(?<Nomer>[0-9]{1,3})[.] (?<Name>.*)")); // Nomer. Name
 			Ret.rexs.Add(new Regex(@"(?<Nomer>[0-9]{1,3}) (?<Name>.*)")); // Nomer Name
 			Ret.rexs.Add(new Regex(@"(?<Author>.*) - (?<Name>.*)")); // Author - Name
