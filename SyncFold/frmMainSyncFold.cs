@@ -81,23 +81,26 @@ namespace BackupFolder
 				File.Copy(s, newPath(s));
 			};
 
-			foreach (var item in listAdd.Items)
+			while (listAdd.Items.Count > 0)
 			{
+				var item = listAdd.Items[0];
+				this.Text = "Copy: {0}".fmt(item);
 				Copy(item.ToString());
-			}//for
+				listAdd.Items.Remove(item);
+			}
 		}
 
 		private void kmdList()
 		{
-			Func<IEnumerable<string>, string, bool> isHere =
-				(files, file) => {
-					return files.Select(s => Path.GetFileName(s))
-						.Contains(Path.GetFileName(file));
+			Func<IEnumerable<string>, string, string, bool> isHere =
+				(files, begin, file) =>
+				{
+					return files.Any(s => s.after(begin) == file);
 				};
 			var filesSrc = getFiles(baseSrc.addToPath(itemSrc)).ToArray();
 			var filesDst = getFiles(baseDst.addToPath(itemSrc)).ToArray();
-			var filesAdd = filesSrc.Where(s => !isHere(filesDst, s));
-			var filesRemove = filesDst.Where(s => !isHere(filesSrc, s));
+			var filesAdd = filesSrc.Where(s => !isHere(filesDst, baseDst, s.after(baseSrc)));
+			var filesRemove = filesDst.Where(s => !isHere(filesSrc, baseSrc, s.after(baseDst)));
 
 			listAdd.Items.Clear();
 			listRemove.Items.Clear();
@@ -131,15 +134,24 @@ namespace BackupFolder
 			listFolders.Items.AddRange(folders);
 
 			kmdDst();
+
+			listFolders.Focus();
 		}
 
 		private void listRemove_KeyDown(object sender, KeyEventArgs e)
 		{
+			var deleted = new List<object>();
 			if (e.KeyCode == Keys.Delete)
 			{
 				foreach (var item in listRemove.SelectedItems)
 				{
 					File.Delete(item.ToString());
+					deleted.Add(item);
+				}//for
+
+				foreach (var item in deleted)
+				{
+					listRemove.Items.Remove(item);
 				}//for
 			}//if
 		}

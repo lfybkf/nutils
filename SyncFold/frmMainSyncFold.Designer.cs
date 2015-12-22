@@ -78,7 +78,7 @@
 			this.btnDst.Location = new System.Drawing.Point(0, 92);
 			this.btnDst.Name = "btnDst";
 			this.btnDst.Size = new System.Drawing.Size(202, 46);
-			this.btnDst.TabIndex = 4;
+			this.btnDst.TabIndex = 3;
 			this.btnDst.Text = "button1";
 			this.btnDst.UseVisualStyleBackColor = true;
 			// 
@@ -119,7 +119,7 @@
 			this.listFolders.Location = new System.Drawing.Point(3, 3);
 			this.listFolders.Name = "listFolders";
 			this.listFolders.Size = new System.Drawing.Size(202, 374);
-			this.listFolders.TabIndex = 2;
+			this.listFolders.TabIndex = 0;
 			this.listFolders.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listFolders_KeyDown);
 			// 
 			// listAdd
@@ -130,8 +130,7 @@
 			this.listAdd.Location = new System.Drawing.Point(211, 3);
 			this.listAdd.Name = "listAdd";
 			this.listAdd.Size = new System.Drawing.Size(545, 374);
-			this.listAdd.TabIndex = 3;
-			
+			this.listAdd.TabIndex = 30;
 			// 
 			// listRemove
 			// 
@@ -142,7 +141,7 @@
 			this.listRemove.Name = "listRemove";
 			this.listRemove.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
 			this.listRemove.Size = new System.Drawing.Size(545, 219);
-			this.listRemove.TabIndex = 4;
+			this.listRemove.TabIndex = 40;
 			this.listRemove.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listRemove_KeyDown);
 			// 
 			// dialogDst
