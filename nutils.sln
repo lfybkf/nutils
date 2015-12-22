@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taimer", "Taimer\Taimer.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dir2ssp", "Dir2ssp\Dir2ssp.csproj", "{CE9BD7BF-D349-401A-879C-DFCEFDD98BEE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackupFolder", "BackupFolder\BackupFolder.csproj", "{8A9C48A4-A253-4723-8B43-35344E0401BE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyncFold", "SyncFold\SyncFold.csproj", "{8A9C48A4-A253-4723-8B43-35344E0401BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
