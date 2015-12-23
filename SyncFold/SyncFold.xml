@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!DOCTYPE ROOT [
+	<!ELEMENT ROOT (Profile+)>
+	<!ELEMENT Profile (Comment*)>
+	<!ATTLIST Profile Name ID #REQUIRED>
+	<!ATTLIST Profile SrcVolume CDATA #REQUIRED>
+	<!ATTLIST Profile DstVolume CDATA #REQUIRED>
+	<!ATTLIST Profile SrcFolder CDATA #REQUIRED>
+	<!ATTLIST Profile DstFolder CDATA #REQUIRED>
+	<!ELEMENT Comment (#PCDATA)>
+	<!ATTLIST Comment Author CDATA #REQUIRED>
+]>
+<ROOT>
+	<Profile Name="Book" 
+					 SrcVolume="DATA" SrcFolder="Книги" 
+					 DstVolume="MIREX" DstFolder="Книги" />
+</ROOT>
