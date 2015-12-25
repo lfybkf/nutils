@@ -11,7 +11,14 @@
 	<!ATTLIST Comment Author CDATA #REQUIRED>
 ]>
 <ROOT>
-	<Profile Name="Book" 
-					 SrcVolume="DATA" SrcFolder="Книги" 
-					 DstVolume="MIREX" DstFolder="Книги" />
+	<Profile Name="Test_tor2" 
+					SrcVolume="DATA" SrcFolder="Temp\tor"
+					DstVolume="DATA" DstFolder="Temp\tor2" />
+	<Profile Name="Test_tor3" 
+					SrcVolume="DATA" SrcFolder="Temp\tor"
+					DstVolume="DATA" DstFolder="Temp\tor3" />
+	
+	<Profile Name="Book_Software" 
+					 SrcVolume="DATA" SrcFolder="Книги\Software"
+					 DstVolume="MIREX" DstFolder="Software" />
 </ROOT>

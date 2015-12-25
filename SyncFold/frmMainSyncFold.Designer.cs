@@ -1,4 +1,4 @@
-﻿namespace BackupFolder
+﻿namespace SyncFold
 {
 	partial class frmMainSyncFold
 	{
