@@ -15,6 +15,7 @@ namespace SyncFold
 	public partial class frmMainSyncFold : Form
 	{
 		IList<Kommand> kmds = new List<Kommand>();
+		Profile profile { get { return (Profile)listProfiles.SelectedItem; } }
 		IEnumerable<Profile> profiles;
 
 		public frmMainSyncFold()
@@ -24,7 +25,7 @@ namespace SyncFold
 
 		private void InitKmd()
 		{
-			//kmds.Add(new Kommand("List", kmdList));
+			kmds.Add(new Kommand("Add", kmdAdd));
 
 			foreach (Kommand kmd in kmds) { kmd.isExecuted += kmd_isExecuted; }
 			foreach (var btn in this.panManage.Controls.OfType<Button>())
@@ -33,62 +34,60 @@ namespace SyncFold
 			}//for
 		}
 
-		void kmd_isExecuted(object sender, EventArgs e) { this.Text = (sender as Kommand).Caption; }
-
-
-
-		private IEnumerable<string> getFiles(string folder)
+		private async void kmdAdd()
 		{
-			if (folder.isEmpty())	{	return new string[0];	}//if
-			if (!Directory.Exists(folder)) { return new string[0]; }//if
-
-			var result = new List<string>();
-			result.AddRange(Directory.GetFiles(folder));
-			var folders = Directory.GetDirectories(folder);
-			foreach (var item in folders)
+			string sWork = string.Empty;
+			Action<string> report = (s) => 
 			{
-				result.AddRange(getFiles(item));
-			}//for
-			return result;
+				if (s != sWork) //copy begin
+				{
+					sWork = s;
+					this.Text = sWork;
+				}//if
+				else // copy end
+				{
+					ListBoxRefresh(listAdd, profile.filesAdd);
+				}//else
+			};
+			Progress<string> progress = new Progress<string>(report);
+			await profile.CopyAsync(progress);
 		}
+
+		void kmd_isExecuted(object sender, EventArgs e) { this.Text = (sender as Kommand).Caption; }
 
 		private void frmMainBackupFolder_Load(object sender, EventArgs e)
 		{
 			InitKmd();
 
 			profiles = Profile.LoadAll();
+			listProfiles.DataSource = profiles;
 
-			listFolders.Focus();
+			listProfiles.Focus();
 		}
+
+		public void ListBoxRefresh<T>(ListBox lb, List<T> list)
+		{
+			lb.DataSource = list;
+			var bc = lb.BindingContext[list];
+			(bc as CurrencyManager).Refresh();
+		}//function
 
 		private void listRemove_KeyDown(object sender, KeyEventArgs e)
 		{
-			var deleted = new List<object>();
 			if (e.KeyCode == Keys.Delete)
 			{
-				foreach (var item in listRemove.SelectedItems)
+				foreach (var item in listDel.SelectedItems)
 				{
-					File.Delete(item.ToString());
-					deleted.Add(item);
+					profile.Delete(item.ToString());
 				}//for
-
-				foreach (var item in deleted)
-				{
-					listRemove.Items.Remove(item);
-				}//for
+				ListBoxRefresh(listDel, profile.filesDel);
 			}//if
 		}
 
-		private void listFolders_KeyDown(object sender, KeyEventArgs e)
+		private void listProfiles_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (e.KeyCode == Keys.Enter)
-			{
-				;
-			}//if
-			else if (e.KeyCode == Keys.Space)
-			{
-				;
-			}//if
+			ListBoxRefresh(listAdd, profile.filesAdd);
+			ListBoxRefresh(listDel, profile.filesDel);
 		}//function
 	}//class
 }

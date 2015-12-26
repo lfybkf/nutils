@@ -23,6 +23,7 @@ namespace SyncFold
 
 	public class Profile
 	{
+		public static Action<string> log;
 		static DriveInfo[] drives = DriveInfo.GetDrives().Where(z => z.IsReady).ToArray();
 		static string[] EmptyStrings = new string[0];
 
@@ -33,8 +34,8 @@ namespace SyncFold
 		string DstFolder;
 		bool IsActive = false;
 		string Error = string.Empty;
-		List<string> filesNew = new List<string>();
-		List<string> filesDel = new List<string>();
+		public List<string> filesAdd = new List<string>();
+		public List<string> filesDel = new List<string>();
 
 		private void Read(XElement src)
 		{
@@ -95,7 +96,9 @@ namespace SyncFold
 					{
 						len1 = item.Length;
 						isEqual = true;
-						for (int i = 1; i <= lend; i++)
+						//D:\\Temp\\Windows.torrent
+						//i=1 -> 't', i=lend-1 -> 'W'
+						for (int i = 1; i < lend; i++)   
 						{
 							if (item[len1 - i] != s[len2 - i])
 							{
@@ -116,16 +119,72 @@ namespace SyncFold
 			var filesDst = getFiles(DstFolder);
 			int lSrc = SrcFolder.Length;
 			int lDst = DstFolder.Length;
-			filesNew = filesSrc.Where(z => !isEndHere(filesDst, z, z.Length - lSrc)).ToList();
+			filesAdd = filesSrc.Where(z => !isEndHere(filesDst, z, z.Length - lSrc)).ToList();
 			filesDel = filesDst.Where(z => !isEndHere(filesSrc, z, z.Length - lDst)).ToList();
 
-			if (!filesNew.Any() && !filesDel.Any())
+			if (!filesAdd.Any() && !filesDel.Any())
 			{
 				Error = "No files to sync";
 				return;
 			}//if
 			#endregion
+
 			IsActive = true;
+		}//function
+
+		private static bool Copy(string from, string to)
+		{
+			try
+			{
+				File.Copy (from, to);
+				return true;
+			}//try
+			catch (Exception exception)
+			{
+				log.execute(exception.Message);
+				return false;
+			}//catch
+		}//function
+
+		public async Task CopyAsync(IProgress<string> progress)
+		{
+			Action run = () =>
+				{
+					string src, dst;
+					string item;
+					while ((item = filesAdd.FirstOrDefault()) != null )
+					{
+						src = item.after(SrcFolder);
+						dst = DstFolder + src;
+						progress.Report(item);
+						if (Copy(item, dst))
+						{
+							filesAdd.Remove(item);
+							progress.Report(item);
+						}//if
+					}//for
+				};
+			await Task.Run(run);
+		}//function
+
+		public bool Delete(string s)
+		{
+			try
+			{
+				if (filesDel.Contains(s) == false)
+				{
+					log.execute("{0} - isn't in list for delete");
+					return false;
+				}//if
+				File.Delete(s);
+				filesDel.Remove(s);
+				return true;
+			}//try
+			catch (Exception exception)
+			{
+				log.execute(exception.Message);
+				return false;
+			}//catch
 		}//function
 
 		private static IEnumerable<string> getFiles(string folder, string pattern = "*.*")
@@ -146,7 +205,7 @@ namespace SyncFold
 				result.Add(prof);
 			}//for
 
-			return result;
+			return result.Where(z => z.IsActive).ToArray();
 		}//function
 
 		public override string ToString()

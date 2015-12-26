@@ -30,13 +30,10 @@
 		{
 			this.panMain = new System.Windows.Forms.TableLayoutPanel();
 			this.panManage = new System.Windows.Forms.Panel();
-			this.btnDst = new System.Windows.Forms.Button();
-			this.txtDst = new System.Windows.Forms.TextBox();
-			this.btnWork = new System.Windows.Forms.Button();
-			this.btnList = new System.Windows.Forms.Button();
-			this.listFolders = new System.Windows.Forms.ListBox();
+			this.btnAdd = new System.Windows.Forms.Button();
+			this.listProfiles = new System.Windows.Forms.ListBox();
 			this.listAdd = new System.Windows.Forms.ListBox();
-			this.listRemove = new System.Windows.Forms.ListBox();
+			this.listDel = new System.Windows.Forms.ListBox();
 			this.dialogDst = new System.Windows.Forms.FolderBrowserDialog();
 			this.panMain.SuspendLayout();
 			this.panManage.SuspendLayout();
@@ -48,9 +45,9 @@
 			this.panMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 27.40448F));
 			this.panMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 72.59552F));
 			this.panMain.Controls.Add(this.panManage, 0, 1);
-			this.panMain.Controls.Add(this.listFolders, 0, 0);
+			this.panMain.Controls.Add(this.listProfiles, 0, 0);
 			this.panMain.Controls.Add(this.listAdd, 1, 0);
-			this.panMain.Controls.Add(this.listRemove, 1, 1);
+			this.panMain.Controls.Add(this.listDel, 1, 1);
 			this.panMain.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panMain.Location = new System.Drawing.Point(0, 0);
 			this.panMain.Name = "panMain";
@@ -62,65 +59,33 @@
 			// 
 			// panManage
 			// 
-			this.panManage.Controls.Add(this.btnDst);
-			this.panManage.Controls.Add(this.txtDst);
-			this.panManage.Controls.Add(this.btnWork);
-			this.panManage.Controls.Add(this.btnList);
+			this.panManage.Controls.Add(this.btnAdd);
 			this.panManage.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panManage.Location = new System.Drawing.Point(3, 383);
 			this.panManage.Name = "panManage";
 			this.panManage.Size = new System.Drawing.Size(202, 219);
 			this.panManage.TabIndex = 1;
 			// 
-			// btnDst
+			// btnAdd
 			// 
-			this.btnDst.Dock = System.Windows.Forms.DockStyle.Top;
-			this.btnDst.Location = new System.Drawing.Point(0, 92);
-			this.btnDst.Name = "btnDst";
-			this.btnDst.Size = new System.Drawing.Size(202, 46);
-			this.btnDst.TabIndex = 3;
-			this.btnDst.Text = "button1";
-			this.btnDst.UseVisualStyleBackColor = true;
+			this.btnAdd.Dock = System.Windows.Forms.DockStyle.Top;
+			this.btnAdd.Location = new System.Drawing.Point(0, 0);
+			this.btnAdd.Name = "btnAdd";
+			this.btnAdd.Size = new System.Drawing.Size(202, 46);
+			this.btnAdd.TabIndex = 1;
+			this.btnAdd.Text = "button1";
+			this.btnAdd.UseVisualStyleBackColor = true;
 			// 
-			// txtDst
+			// listProfiles
 			// 
-			this.txtDst.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.txtDst.Location = new System.Drawing.Point(0, 189);
-			this.txtDst.Name = "txtDst";
-			this.txtDst.ReadOnly = true;
-			this.txtDst.Size = new System.Drawing.Size(202, 30);
-			this.txtDst.TabIndex = 3;
-			// 
-			// btnWork
-			// 
-			this.btnWork.Dock = System.Windows.Forms.DockStyle.Top;
-			this.btnWork.Location = new System.Drawing.Point(0, 46);
-			this.btnWork.Name = "btnWork";
-			this.btnWork.Size = new System.Drawing.Size(202, 46);
-			this.btnWork.TabIndex = 2;
-			this.btnWork.Text = "button1";
-			this.btnWork.UseVisualStyleBackColor = true;
-			// 
-			// btnList
-			// 
-			this.btnList.Dock = System.Windows.Forms.DockStyle.Top;
-			this.btnList.Location = new System.Drawing.Point(0, 0);
-			this.btnList.Name = "btnList";
-			this.btnList.Size = new System.Drawing.Size(202, 46);
-			this.btnList.TabIndex = 1;
-			this.btnList.Text = "button1";
-			this.btnList.UseVisualStyleBackColor = true;
-			// 
-			// listFolders
-			// 
-			this.listFolders.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.listFolders.FormattingEnabled = true;
-			this.listFolders.ItemHeight = 25;
-			this.listFolders.Location = new System.Drawing.Point(3, 3);
-			this.listFolders.Name = "listFolders";
-			this.listFolders.Size = new System.Drawing.Size(202, 374);
-			this.listFolders.TabIndex = 0;
-			this.listFolders.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listFolders_KeyDown);
+			this.listProfiles.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.listProfiles.FormattingEnabled = true;
+			this.listProfiles.ItemHeight = 25;
+			this.listProfiles.Location = new System.Drawing.Point(3, 3);
+			this.listProfiles.Name = "listProfiles";
+			this.listProfiles.Size = new System.Drawing.Size(202, 374);
+			this.listProfiles.TabIndex = 0;
+			this.listProfiles.SelectedIndexChanged += new System.EventHandler(this.listProfiles_SelectedIndexChanged);
 			// 
 			// listAdd
 			// 
@@ -132,17 +97,17 @@
 			this.listAdd.Size = new System.Drawing.Size(545, 374);
 			this.listAdd.TabIndex = 30;
 			// 
-			// listRemove
+			// listDel
 			// 
-			this.listRemove.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.listRemove.FormattingEnabled = true;
-			this.listRemove.ItemHeight = 25;
-			this.listRemove.Location = new System.Drawing.Point(211, 383);
-			this.listRemove.Name = "listRemove";
-			this.listRemove.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-			this.listRemove.Size = new System.Drawing.Size(545, 219);
-			this.listRemove.TabIndex = 40;
-			this.listRemove.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listRemove_KeyDown);
+			this.listDel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.listDel.FormattingEnabled = true;
+			this.listDel.ItemHeight = 25;
+			this.listDel.Location = new System.Drawing.Point(211, 383);
+			this.listDel.Name = "listDel";
+			this.listDel.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+			this.listDel.Size = new System.Drawing.Size(545, 219);
+			this.listDel.TabIndex = 40;
+			this.listDel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listRemove_KeyDown);
 			// 
 			// dialogDst
 			// 
@@ -162,7 +127,6 @@
 			this.Load += new System.EventHandler(this.frmMainBackupFolder_Load);
 			this.panMain.ResumeLayout(false);
 			this.panManage.ResumeLayout(false);
-			this.panManage.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -171,13 +135,10 @@
 
 		private System.Windows.Forms.TableLayoutPanel panMain;
 		private System.Windows.Forms.Panel panManage;
-		private System.Windows.Forms.Button btnWork;
-		private System.Windows.Forms.Button btnList;
-		private System.Windows.Forms.TextBox txtDst;
-		private System.Windows.Forms.Button btnDst;
-		private System.Windows.Forms.ListBox listFolders;
+		private System.Windows.Forms.Button btnAdd;
+		private System.Windows.Forms.ListBox listProfiles;
 		private System.Windows.Forms.ListBox listAdd;
-		private System.Windows.Forms.ListBox listRemove;
+		private System.Windows.Forms.ListBox listDel;
 		private System.Windows.Forms.FolderBrowserDialog dialogDst;
 	}
 }
