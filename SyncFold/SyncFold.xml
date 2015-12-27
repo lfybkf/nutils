@@ -14,11 +14,112 @@
 	<Profile Name="Test_tor2" 
 					SrcVolume="DATA" SrcFolder="Temp\tor"
 					DstVolume="DATA" DstFolder="Temp\tor2" />
-	<Profile Name="Test_tor3" 
-					SrcVolume="DATA" SrcFolder="Temp\tor"
-					DstVolume="DATA" DstFolder="Temp\tor3" />
-	
+
+	<Profile Name="Обучение_Android" 
+					 SrcVolume="DanFilm" SrcFolder="Абучение\Android"
+					 DstVolume="MyBook2" DstFolder="Обучение\Android" />
+	<Profile Name="Обучение_ASP" 
+					 SrcVolume="DanFilm" SrcFolder="Абучение\ASP"
+					 DstVolume="MyBook2" DstFolder="Обучение\ASP" />
+	<Profile Name="Обучение_Database" 
+					 SrcVolume="DanFilm" SrcFolder="Абучение\Database"
+					 DstVolume="MyBook2" DstFolder="Обучение\Database" />
+	<Profile Name="Обучение_DataMining" 
+					 SrcVolume="DanFilm" SrcFolder="Абучение\DataMining"
+					 DstVolume="MyBook2" DstFolder="Обучение\DataMining" />
+	<Profile Name="Обучение_DerekBanas"
+					 SrcVolume="DanFilm" SrcFolder="Абучение\DerekBanas"
+					 DstVolume="MyBook2" DstFolder="Обучение\DerekBanas" />
+	<Profile Name="Обучение_EntityFramework"
+					 SrcVolume="DanFilm" SrcFolder="Абучение\EntityFramework"
+					 DstVolume="MyBook2" DstFolder="Обучение\EntityFramework" />
+	<Profile Name="Обучение_Gamedev"
+					 SrcVolume="DanFilm" SrcFolder="Абучение\Gamedev"
+					 DstVolume="MyBook2" DstFolder="Обучение\Gamedev" />
+	<Profile Name="Обучение_Hardware"
+					 SrcVolume="DanFilm" SrcFolder="Абучение\Hardware"
+					 DstVolume="MyBook2" DstFolder="Обучение\Hardware" />
+	<Profile Name="Обучение_Java"
+					 SrcVolume="DanFilm" SrcFolder="Абучение\Java"
+					 DstVolume="MyBook2" DstFolder="Обучение\Java" />
+	<Profile Name="Обучение_JavaScript"
+					 SrcVolume="DanFilm" SrcFolder="Абучение\JavaScript"
+					 DstVolume="MyBook2" DstFolder="Обучение\JavaScript" />
+	<Profile Name="Обучение_NET"
+					 SrcVolume="DanFilm" SrcFolder="Абучение\NET"
+					 DstVolume="MyBook2" DstFolder="Обучение\NET" />
+	<Profile Name="Обучение_NoSoft"
+					 SrcVolume="DanFilm" SrcFolder="Абучение\NoSoft"
+					 DstVolume="MyBook2" DstFolder="Обучение\NoSoft" />
+	<Profile Name="Обучение_Other"
+					 SrcVolume="DanFilm" SrcFolder="Абучение\Other"
+					 DstVolume="MyBook2" DstFolder="Обучение\Other" />
+	<Profile Name="Обучение_Physics"
+					 SrcVolume="DanFilm" SrcFolder="Абучение\Physics"
+					 DstVolume="MyBook2" DstFolder="Обучение\Physics" />
+	<Profile Name="Обучение_SharePoint"
+					 SrcVolume="DanFilm" SrcFolder="Абучение\SharePoint"
+					 DstVolume="MyBook2" DstFolder="Обучение\SharePoint" />
+	<Profile Name="Обучение_Unity"
+					 SrcVolume="DanFilm" SrcFolder="Абучение\Unity"
+					 DstVolume="MyBook2" DstFolder="Обучение\Unity" />
+	<Profile Name="Обучение_Web"
+					 SrcVolume="DanFilm" SrcFolder="Абучение\Web"
+					 DstVolume="MyBook2" DstFolder="Обучение\Web" />
+
 	<Profile Name="Book_Software" 
 					 SrcVolume="DATA" SrcFolder="Книги\Software"
 					 DstVolume="MIREX" DstFolder="Software" />
+	<Profile Name="Book_manual" 
+					 SrcVolume="DATA" SrcFolder="Книги\manual"
+					 DstVolume="MIREX" DstFolder="manual" />
+	<Profile Name="Book_Биология" 
+					 SrcVolume="DATA" SrcFolder="Книги\Биология"
+					 DstVolume="MIREX" DstFolder="Биология" />
+	<Profile Name="Book_Вояки" 
+					 SrcVolume="DATA" SrcFolder="Книги\Вояки"
+					 DstVolume="MIREX" DstFolder="Вояки" />
+	<Profile Name="Book_Здоровье" 
+					 SrcVolume="DATA" SrcFolder="Книги\Здоровье"
+					 DstVolume="MIREX" DstFolder="Здоровье" />
+	<Profile Name="Book_Иняз" 
+					 SrcVolume="DATA" SrcFolder="Книги\Иняз"
+					 DstVolume="MIREX" DstFolder="Иняз" />
+	<Profile Name="Book_Культура" 
+					 SrcVolume="DATA" SrcFolder="Книги\Культура"
+					 DstVolume="MIREX" DstFolder="Культура" />
+	<Profile Name="Book_Литература" 
+					 SrcVolume="DATA" SrcFolder="Книги\Литература"
+					 DstVolume="MIREX" DstFolder="Литература" />
+	<Profile Name="Book_Математика" 
+					 SrcVolume="DATA" SrcFolder="Книги\Математика"
+					 DstVolume="MIREX" DstFolder="Математика" />
+	<Profile Name="Book_Мозг" 
+					 SrcVolume="DATA" SrcFolder="Книги\Мозг"
+					 DstVolume="MIREX" DstFolder="Мозг" />
+	<Profile Name="Book_Развлечения" 
+					 SrcVolume="DATA" SrcFolder="Книги\Развлечения"
+					 DstVolume="MIREX" DstFolder="Развлечения" />
+	<Profile Name="Book_Рисовать" 
+					 SrcVolume="DATA" SrcFolder="Книги\Рисовать"
+					 DstVolume="MIREX" DstFolder="Рисовать" />
+	<Profile Name="Book_Справочник" 
+					 SrcVolume="DATA" SrcFolder="Книги\Справочник"
+					 DstVolume="MIREX" DstFolder="Справочник" />
+	<Profile Name="Book_Схемы" 
+					 SrcVolume="DATA" SrcFolder="Книги\Схемы"
+					 DstVolume="MIREX" DstFolder="Схемы" />
+	<Profile Name="Book_Физика" 
+					 SrcVolume="DATA" SrcFolder="Книги\Физика"
+					 DstVolume="MIREX" DstFolder="Физика" />
+	<Profile Name="Book_Химия" 
+					 SrcVolume="DATA" SrcFolder="Книги\Химия"
+					 DstVolume="MIREX" DstFolder="Химия" />
+	<Profile Name="Book_Хозяйство" 
+					 SrcVolume="DATA" SrcFolder="Книги\Хозяйство"
+					 DstVolume="MIREX" DstFolder="Хозяйство" />
+	<Profile Name="Book_Электроника" 
+					 SrcVolume="DATA" SrcFolder="Книги\Электроника"
+					 DstVolume="MIREX" DstFolder="Электроника" />
+
 </ROOT>

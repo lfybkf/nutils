@@ -45,13 +45,30 @@ namespace SyncFold
 			SrcFolder = src.Attribute("SrcFolder").Value;
 			DstFolder = src.Attribute("DstFolder").Value;
 
+			Refresh();
+
+
+		}//function
+
+		public void Refresh()
+		{
+			IsActive = false;
+
 			#region test drive
 			Func<string, DriveInfo> getOnVolume = (vol) =>
 			{
 				return drives.FirstOrDefault
 					(z => z.VolumeLabel.Equals(vol, StringComparison.InvariantCultureIgnoreCase));
 			};
-			
+			Func<string, string, string> driveFolder = (root, folder) =>
+			{
+				//still "fold\subfold", not "drive:\fold\subfold"
+				if (Directory.Exists(folder) == false)
+					return Path.Combine(root, folder);
+				else
+					return folder;
+			};
+
 			DriveInfo dr;
 			if ((dr = getOnVolume(SrcVolume)) == null)
 			{
@@ -60,7 +77,7 @@ namespace SyncFold
 			}//if
 			else
 			{
-				SrcFolder = Path.Combine(dr.RootDirectory.FullName, SrcFolder);
+				SrcFolder = driveFolder(dr.RootDirectory.FullName, SrcFolder);
 			}//else
 
 			if ((dr = getOnVolume(DstVolume)) == null)
@@ -70,7 +87,7 @@ namespace SyncFold
 			}//if
 			else
 			{
-				DstFolder = Path.Combine(dr.RootDirectory.FullName, DstFolder);
+				DstFolder = driveFolder(dr.RootDirectory.FullName, DstFolder);
 			}//else
 			#endregion
 
@@ -89,31 +106,31 @@ namespace SyncFold
 
 			#region test files
 			Func<IEnumerable<string>, string, int, bool> isEndHere = (list, s, lend) =>
+			{
+				int len1, len2 = s.Length;
+				bool isEqual;
+				foreach (var item in list)
 				{
-					int len1, len2 = s.Length;
-					bool isEqual;
-					foreach (var item in list)
+					len1 = item.Length;
+					isEqual = true;
+					//D:\\Temp\\Windows.torrent
+					//i=1 -> 't', i=lend-1 -> 'W'
+					for (int i = 1; i < lend; i++)
 					{
-						len1 = item.Length;
-						isEqual = true;
-						//D:\\Temp\\Windows.torrent
-						//i=1 -> 't', i=lend-1 -> 'W'
-						for (int i = 1; i < lend; i++)   
+						if (item[len1 - i] != s[len2 - i])
 						{
-							if (item[len1 - i] != s[len2 - i])
-							{
-								isEqual = false;
-								break;
-							}//if
-						}//for
-						
-						if (isEqual)
-						{
-							return true;
+							isEqual = false;
+							break;
 						}//if
 					}//for
-					return false;
-				};
+
+					if (isEqual)
+					{
+						return true;
+					}//if
+				}//for
+				return false;
+			};
 
 			var filesSrc = getFiles(SrcFolder);
 			var filesDst = getFiles(DstFolder);
@@ -146,6 +163,23 @@ namespace SyncFold
 			}//catch
 		}//function
 
+		public void Copy(IProgress<string> progress)
+		{
+			string src, dst;
+			string item;
+			while ((item = filesAdd.FirstOrDefault()) != null)
+			{
+				src = item.after(SrcFolder);
+				dst = DstFolder + src;
+				progress.Report(item);
+				if (Copy(item, dst))
+				{
+					filesAdd.Remove(item);
+					progress.Report(item);
+				}//if
+			}//for
+		}//function
+
 		public async Task CopyAsync(IProgress<string> progress)
 		{
 			Action run = () =>
@@ -157,6 +191,11 @@ namespace SyncFold
 						src = item.after(SrcFolder);
 						dst = DstFolder + src;
 						progress.Report(item);
+						var dstFolder = Path.GetDirectoryName(dst);
+						if (Directory.Exists(dstFolder) == false)
+						{
+							Directory.CreateDirectory(dstFolder);
+						}//if
 						if (Copy(item, dst))
 						{
 							filesAdd.Remove(item);
@@ -173,7 +212,7 @@ namespace SyncFold
 			{
 				if (filesDel.Contains(s) == false)
 				{
-					log.execute("{0} - isn't in list for delete");
+					log.execute("{0} - isn't in list for delete".fmt(s));
 					return false;
 				}//if
 				File.Delete(s);
@@ -203,6 +242,9 @@ namespace SyncFold
 				prof = new Profile();
 				prof.Read(item);
 				result.Add(prof);
+
+				log.execute(prof.Name);
+				if (!prof.IsActive) { log.execute("\t" + prof.Error); }
 			}//for
 
 			return result.Where(z => z.IsActive).ToArray();
@@ -216,7 +258,7 @@ namespace SyncFold
 			}//if
 			else
 			{
-				return "{0} ({1})".fmt(Name, Error);	
+				return "{Name} ({Error})".fmto(this);	
 			}//else
 		}
 	}//class

@@ -25,7 +25,9 @@ namespace SyncFold
 
 		private void InitKmd()
 		{
-			kmds.Add(new Kommand("Add", kmdAdd));
+			kmds.Add(new Kommand("Sync", kmdSync));
+			kmds.Add(new Kommand("Refresh", kmdRefresh));
+			kmds.Add(new Kommand("Delete", kmdDelete));
 
 			foreach (Kommand kmd in kmds) { kmd.isExecuted += kmd_isExecuted; }
 			foreach (var btn in this.panManage.Controls.OfType<Button>())
@@ -34,7 +36,40 @@ namespace SyncFold
 			}//for
 		}
 
-		private async void kmdAdd()
+		private void kmdDelete()
+		{
+			foreach (var item in listDel.SelectedItems)
+			{
+				profile.Delete(item.ToString());	
+			}//for
+			ListBoxRefresh(listDel, profile.filesDel);
+			
+		}
+
+		private void kmdRefresh()
+		{
+			profile.Refresh();
+		}
+
+		void frmStart()
+		{
+			Profile.log = Log;
+
+			InitKmd();
+
+			profiles = Profile.LoadAll();
+			listProfiles.DataSource = profiles;
+
+			listProfiles.Focus();
+
+		}//function
+
+		void Log(string msg)
+		{
+			listLog.Items.Add(msg);
+		}//function
+
+		private async void kmdSync()
 		{
 			string sWork = string.Empty;
 			Action<string> report = (s) => 
@@ -50,19 +85,19 @@ namespace SyncFold
 				}//else
 			};
 			Progress<string> progress = new Progress<string>(report);
+			//await Task.Run((profile.Copy(progress));
 			await profile.CopyAsync(progress);
 		}
 
-		void kmd_isExecuted(object sender, EventArgs e) { this.Text = (sender as Kommand).Caption; }
+		void kmd_isExecuted(object sender, EventArgs e) 
+		{
+			var o = new { time = DateTime.Now.ToShortTimeString(), caption = (sender as Kommand).Caption };
+			this.Text = "{time} {caption}".fmto(o);
+		}
 
 		private void frmMainBackupFolder_Load(object sender, EventArgs e)
 		{
-			InitKmd();
-
-			profiles = Profile.LoadAll();
-			listProfiles.DataSource = profiles;
-
-			listProfiles.Focus();
+			frmStart();
 		}
 
 		public void ListBoxRefresh<T>(ListBox lb, List<T> list)
@@ -72,15 +107,11 @@ namespace SyncFold
 			(bc as CurrencyManager).Refresh();
 		}//function
 
-		private void listRemove_KeyDown(object sender, KeyEventArgs e)
+		private void listDel_KeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.KeyCode == Keys.Delete)
 			{
-				foreach (var item in listDel.SelectedItems)
-				{
-					profile.Delete(item.ToString());
-				}//for
-				ListBoxRefresh(listDel, profile.filesDel);
+				kmdDelete();
 			}//if
 		}
 
