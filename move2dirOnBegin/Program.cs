@@ -11,7 +11,20 @@ namespace move2dirOnBegin
 	{
 		static void Main(string[] args)
 		{
+			Mover mover;
 			if (args.Length == 0)
+			{
+				var dirs = Directory.EnumerateDirectories(Environment.CurrentDirectory);
+				foreach (var dir in dirs)
+				{
+					mover = new Mover(Path.GetFileNameWithoutExtension(dir));
+					mover.Move();
+				}//for
+				return;
+			}//if
+
+			string sBegin = args[0];
+			if (sBegin == "HELP")
 			{
 				Console.WriteLine("run exe pattern");
 				Console.WriteLine("folder with name \"pattern\" will be created");
@@ -20,35 +33,11 @@ namespace move2dirOnBegin
 				Console.ReadLine();
 				return;
 			}//if
-			string sBegin = args[0];
-			Console.WriteLine("pattern = " + sBegin);
 
-			//list files which match pattern
-			IEnumerable<string> files = Directory.EnumerateFiles(Environment.CurrentDirectory)
-				.Select(f => Path.GetFileName(f))
-				.Where(f => f.StartsWith(sBegin))
-				.ToArray();
-
-			//create dir if need
-			if (Directory.Exists(sBegin) == false)
-			{
-				Directory.CreateDirectory(sBegin);	
-			}//if
-			
-			//move there
-			string pathNew = null;
-			foreach (var item in files)
-			{
-				pathNew = Path.Combine(sBegin, item);
-				if (File.Exists(pathNew))
-				{
-					continue;
-				}//if
-				Console.WriteLine(item);
-				File.Move(item, pathNew);
-			}//for
-
-			//Console.ReadLine();
+			mover = new Mover(sBegin);
+			mover.IsCreateDir = true;
+			mover.Move();
+			return;
 		}
 	}
 }
