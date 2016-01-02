@@ -11,6 +11,22 @@
 	<!ATTLIST Comment Author CDATA #REQUIRED>
 ]>
 <ROOT>
+	<Profile Name="БуБуБу_Фрагменты" 
+					SrcVolume="DATA" SrcFolder="Кино\_black\Бубубу\Фрагменты"
+					DstVolume="DanFilm" DstFolder="БуБуБу\Фрагменты" />
+	<Profile Name="БуБуБу_Обломы" 
+					SrcVolume="DATA" SrcFolder="Кино\_black\Бубубу\Обломы"
+					DstVolume="DanFilm" DstFolder="БуБуБу\Обломы" />
+	<Profile Name="БуБуБу_Кинопесни"
+						SrcVolume="DATA" SrcFolder="Кино\_black\Бубубу\Кинопесни"
+						DstVolume="DanFilm" DstFolder="БуБуБу\Кинопесни" />
+	<Profile Name="БуБуБу_Техника"
+							SrcVolume="DATA" SrcFolder="Кино\_black\Бубубу\Техника"
+							DstVolume="DanFilm" DstFolder="БуБуБу\Техника" />
+	<Profile Name="БуБуБу_Животные"
+								SrcVolume="DATA" SrcFolder="Кино\_black\Бубубу\Животные"
+								DstVolume="DanFilm" DstFolder="БуБуБу\Животные" />
+
 	<Profile Name="Test_tor2" 
 					SrcVolume="DATA" SrcFolder="Temp\tor"
 					DstVolume="DATA" DstFolder="Temp\tor2" />
@@ -122,4 +138,12 @@
 					 SrcVolume="DATA" SrcFolder="Книги\Электроника"
 					 DstVolume="MIREX" DstFolder="Электроника" />
 
+	<Profile Name="Spa" 
+					SrcVolume="DATA" SrcFolder="Backup\spa"
+					DstVolume="MyBook1" DstFolder="iso\spa" />
+	<Profile Name="Audio_Alb"
+					SrcVolume="DATA" SrcFolder="Audio\Audio_Alb"
+					DstVolume="MyBook1" DstFolder="Audio\Audio_Alb" />
+					 
+					 
 </ROOT>

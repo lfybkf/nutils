@@ -9,17 +9,6 @@ using BDB;
 
 namespace SyncFold
 {
-	static class Log 
-	{
-		static IList<string> data = new List<string>();
-		static string fmtCommon = "{0}: {1}: {2}";
-		public static void logInfo(string msg, string src = "COMMON") 
-		{
-			data.Add(fmtCommon.fmt(DateTime.Now.ToShortTimeString(), src, msg));
-		}
-		//public static string COMMON = "COMMON";
-
-	}//class
 
 	public class Profile
 	{
@@ -35,7 +24,12 @@ namespace SyncFold
 		bool IsActive = false;
 		string Error = string.Empty;
 		public List<string> filesAdd = new List<string>();
+		public List<string> filesRefresh = new List<string>();
 		public List<string> filesDel = new List<string>();
+
+		static List<Profile> _profiles = new List<Profile>();
+		public static int Count { get { return _profiles == null ? 0 : _profiles.Count; } }
+		public static IList<Profile> activeProfiles = new List<Profile>();
 
 		private void Read(XElement src)
 		{
@@ -44,13 +38,28 @@ namespace SyncFold
 			DstVolume = src.Attribute("DstVolume").Value;
 			SrcFolder = src.Attribute("SrcFolder").Value;
 			DstFolder = src.Attribute("DstFolder").Value;
-
-			Refresh();
-
-
 		}//function
 
-		public void Refresh()
+		public bool zIsGoodToAdd(string file)
+		{
+			return true;
+		}//function
+
+		private static bool zIsEndEqual(string s1, string s2, int len)
+		{
+			int l1 = s1.Length;
+			int l2 = s2.Length;
+			for (int i = 1; i < len; i++)
+			{
+				if (s1[l1 - i] != s2[l2 - i])
+				{
+					return false;
+				}//if
+			}//for
+			return true;
+		}//function
+
+		public void Load()
 		{
 			IsActive = false;
 
@@ -126,6 +135,7 @@ namespace SyncFold
 
 					if (isEqual)
 					{
+						//if (new FileInfo(item).Length != new FileInfo(s).Length){	}//if
 						return true;
 					}//if
 				}//for
@@ -149,11 +159,11 @@ namespace SyncFold
 			IsActive = true;
 		}//function
 
-		private static bool Copy(string from, string to)
+		private static bool Copy(string from, string to, bool overwrite = false)
 		{
 			try
 			{
-				File.Copy (from, to);
+				File.Copy(from, to, overwrite);
 				return true;
 			}//try
 			catch (Exception exception)
@@ -232,22 +242,33 @@ namespace SyncFold
 			return Directory.GetFiles(folder, pattern, SearchOption.AllDirectories);
 		}
 
-		public static IEnumerable<Profile> LoadAll()
+		/// <summary>
+		/// считать xml в static IEnumerable
+		/// </summary>
+		public static void ReadAll()
 		{
-			IList<Profile> result = new List<Profile>();
 			XDocument xdoc = XDocument.Load("SyncFold.xml");
 			Profile prof;
 			foreach (var item in xdoc.Root.Elements("Profile"))
 			{
 				prof = new Profile();
 				prof.Read(item);
-				result.Add(prof);
-
-				log.execute(prof.Name);
-				if (!prof.IsActive) { log.execute("\t" + prof.Error); }
+				_profiles.Add(prof);
 			}//for
+		}//function
 
-			return result.Where(z => z.IsActive).ToArray();
+		public static async Task LoadAllAsync(IProgress<string> progress)
+		{
+			Action run = () => {
+				foreach (var prof in _profiles)
+				{
+					prof.Load();
+					if (prof.IsActive) { activeProfiles.Add(prof); }
+
+					progress.Report(prof.ToString());
+				}//for
+			};
+			await Task.Run(run);
 		}//function
 
 		public override string ToString()
@@ -258,7 +279,8 @@ namespace SyncFold
 			}//if
 			else
 			{
-				return "{Name} ({Error})".fmto(this);	
+				return "{0} ({1})".fmt(Name, Error);
+				//return "{Name} ({Error})".fmto(this);
 			}//else
 		}
 	}//class

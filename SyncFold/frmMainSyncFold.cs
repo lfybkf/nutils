@@ -16,7 +16,7 @@ namespace SyncFold
 	{
 		IList<Kommand> kmds = new List<Kommand>();
 		Profile profile { get { return (Profile)listProfiles.SelectedItem; } }
-		IEnumerable<Profile> profiles;
+		IEnumerable<Profile> profiles { get { return Profile.activeProfiles; } }
 
 		public frmMainSyncFold()
 		{
@@ -48,21 +48,46 @@ namespace SyncFold
 
 		private void kmdRefresh()
 		{
-			profile.Refresh();
+			profile.Load();
 		}
 
-		void frmStart()
+		private void SetProgressBar(int max, int min=0)
+		{
+			progressBar.Minimum = min;
+			progressBar.Maximum = max;
+			progressBar.Value = min;
+		}//function
+
+		private void IncProgressBar()
+		{
+			progressBar.Value++;
+		}//function
+
+		async void frmStart()
 		{
 			Profile.log = Log;
 
 			InitKmd();
 
-			profiles = Profile.LoadAll();
+			//read
+			Profile.ReadAll();
+			SetProgressBar(Profile.Count);
+
+			//load
+			Action<string> report = (s) =>
+			{
+				IncProgressBar();
+				Log(s);
+				var bc = (CurrencyManager)listProfiles.BindingContext[listProfiles.DataSource];
+				bc.Refresh();	
+			};
+
 			listProfiles.DataSource = profiles;
+			await Profile.LoadAllAsync(new Progress<string>(report));
 
 			listProfiles.Focus();
 
-		}//function
+		}
 
 		void Log(string msg)
 		{
@@ -72,6 +97,7 @@ namespace SyncFold
 		private async void kmdSync()
 		{
 			string sWork = string.Empty;
+			SetProgressBar(profile.filesAdd.Count);
 			Action<string> report = (s) => 
 			{
 				if (s != sWork) //copy begin
@@ -81,6 +107,7 @@ namespace SyncFold
 				}//if
 				else // copy end
 				{
+					IncProgressBar();
 					ListBoxRefresh(listAdd, profile.filesAdd);
 				}//else
 			};

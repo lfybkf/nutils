@@ -30,6 +30,7 @@
 		{
 			this.panMain = new System.Windows.Forms.TableLayoutPanel();
 			this.panManage = new System.Windows.Forms.Panel();
+			this.btnDelete = new System.Windows.Forms.Button();
 			this.btnRefresh = new System.Windows.Forms.Button();
 			this.btnSync = new System.Windows.Forms.Button();
 			this.listProfiles = new System.Windows.Forms.ListBox();
@@ -37,7 +38,7 @@
 			this.listDel = new System.Windows.Forms.ListBox();
 			this.dialogDst = new System.Windows.Forms.FolderBrowserDialog();
 			this.listLog = new System.Windows.Forms.ListBox();
-			this.btnDelete = new System.Windows.Forms.Button();
+			this.progressBar = new System.Windows.Forms.ProgressBar();
 			this.panMain.SuspendLayout();
 			this.panManage.SuspendLayout();
 			this.SuspendLayout();
@@ -57,7 +58,7 @@
 			this.panMain.RowCount = 2;
 			this.panMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 62.91667F));
 			this.panMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 37.08333F));
-			this.panMain.Size = new System.Drawing.Size(759, 511);
+			this.panMain.Size = new System.Drawing.Size(759, 488);
 			this.panMain.TabIndex = 0;
 			// 
 			// panManage
@@ -66,10 +67,20 @@
 			this.panManage.Controls.Add(this.btnRefresh);
 			this.panManage.Controls.Add(this.btnSync);
 			this.panManage.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panManage.Location = new System.Drawing.Point(3, 324);
+			this.panManage.Location = new System.Drawing.Point(3, 310);
 			this.panManage.Name = "panManage";
-			this.panManage.Size = new System.Drawing.Size(202, 184);
+			this.panManage.Size = new System.Drawing.Size(202, 175);
 			this.panManage.TabIndex = 1;
+			// 
+			// btnDelete
+			// 
+			this.btnDelete.Dock = System.Windows.Forms.DockStyle.Top;
+			this.btnDelete.Location = new System.Drawing.Point(0, 92);
+			this.btnDelete.Name = "btnDelete";
+			this.btnDelete.Size = new System.Drawing.Size(202, 46);
+			this.btnDelete.TabIndex = 3;
+			this.btnDelete.Text = "button1";
+			this.btnDelete.UseVisualStyleBackColor = true;
 			// 
 			// btnRefresh
 			// 
@@ -98,7 +109,7 @@
 			this.listProfiles.ItemHeight = 25;
 			this.listProfiles.Location = new System.Drawing.Point(3, 3);
 			this.listProfiles.Name = "listProfiles";
-			this.listProfiles.Size = new System.Drawing.Size(202, 315);
+			this.listProfiles.Size = new System.Drawing.Size(202, 301);
 			this.listProfiles.TabIndex = 0;
 			this.listProfiles.SelectedIndexChanged += new System.EventHandler(this.listProfiles_SelectedIndexChanged);
 			// 
@@ -109,7 +120,7 @@
 			this.listAdd.ItemHeight = 25;
 			this.listAdd.Location = new System.Drawing.Point(211, 3);
 			this.listAdd.Name = "listAdd";
-			this.listAdd.Size = new System.Drawing.Size(545, 315);
+			this.listAdd.Size = new System.Drawing.Size(545, 301);
 			this.listAdd.TabIndex = 30;
 			// 
 			// listDel
@@ -117,10 +128,10 @@
 			this.listDel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.listDel.FormattingEnabled = true;
 			this.listDel.ItemHeight = 25;
-			this.listDel.Location = new System.Drawing.Point(211, 324);
+			this.listDel.Location = new System.Drawing.Point(211, 310);
 			this.listDel.Name = "listDel";
 			this.listDel.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-			this.listDel.Size = new System.Drawing.Size(545, 184);
+			this.listDel.Size = new System.Drawing.Size(545, 175);
 			this.listDel.TabIndex = 40;
 			this.listDel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listDel_KeyDown);
 			// 
@@ -135,20 +146,18 @@
 			this.listLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.listLog.FormattingEnabled = true;
 			this.listLog.ItemHeight = 18;
-			this.listLog.Location = new System.Drawing.Point(0, 511);
+			this.listLog.Location = new System.Drawing.Point(0, 488);
 			this.listLog.Name = "listLog";
 			this.listLog.Size = new System.Drawing.Size(759, 94);
 			this.listLog.TabIndex = 1;
 			// 
-			// btnDelete
+			// progressBar
 			// 
-			this.btnDelete.Dock = System.Windows.Forms.DockStyle.Top;
-			this.btnDelete.Location = new System.Drawing.Point(0, 92);
-			this.btnDelete.Name = "btnDelete";
-			this.btnDelete.Size = new System.Drawing.Size(202, 46);
-			this.btnDelete.TabIndex = 3;
-			this.btnDelete.Text = "button1";
-			this.btnDelete.UseVisualStyleBackColor = true;
+			this.progressBar.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.progressBar.Location = new System.Drawing.Point(0, 582);
+			this.progressBar.Name = "progressBar";
+			this.progressBar.Size = new System.Drawing.Size(759, 23);
+			this.progressBar.TabIndex = 2;
 			// 
 			// frmMainSyncFold
 			// 
@@ -157,6 +166,7 @@
 			this.ClientSize = new System.Drawing.Size(759, 605);
 			this.Controls.Add(this.panMain);
 			this.Controls.Add(this.listLog);
+			this.Controls.Add(this.progressBar);
 			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 			this.Name = "frmMainSyncFold";
@@ -180,6 +190,7 @@
 		private System.Windows.Forms.ListBox listLog;
 		private System.Windows.Forms.Button btnRefresh;
 		private System.Windows.Forms.Button btnDelete;
+		private System.Windows.Forms.ProgressBar progressBar;
 	}
 }
 
