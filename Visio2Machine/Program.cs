@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using io = System.IO;
 
 namespace Visio2Machine
 {
@@ -10,8 +11,18 @@ namespace Visio2Machine
 	{
 		static void Main(string[] args)
 		{
-			if (args.Length < 1) { Console.WriteLine("Usage: exe file.vsd"); return; }
-			string input = args[0];
+			string logFile = "output.log";
+			string input = args.FirstOrDefault();
+			if (input.isEmpty()) 
+			{ 
+				var filesVisio = io.Directory.GetFiles(Environment.CurrentDirectory, "*.vsd*");
+				input = filesVisio.FirstOrDefault();
+			}//if
+			if (input.isEmpty())
+			{
+				(new[] { "Put some Visio files here, or point the path" }).writeToFile(logFile);
+				return;
+			}//if
 
 			Visio V = new Visio(input);
 			try
@@ -20,7 +31,7 @@ namespace Visio2Machine
 			}
 			catch (Exception exc)
 			{
-				(new[] { V.Error, exc.Message }).writeToFile("output.log");
+				(new[] { V.Error, exc.Message }).writeToFile(logFile);
 			}
 			finally
 			{
@@ -34,7 +45,7 @@ namespace Visio2Machine
 			}//try
 			catch (Exception exc)
 			{
-				(new[] { V.Error, exc.Message }).writeToFile("output.log");				
+				(new[] { V.Error, exc.Message }).writeToFile(logFile);
 			}//catch
 		}//function
 	}//class

@@ -49,8 +49,4 @@ namespace Visio2Machine
 		public const string TYPE = "Type";
 	}//class
 
-	class Consts
-	{
-
-	}
 }

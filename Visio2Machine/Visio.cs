@@ -5,7 +5,7 @@ using System.Xml.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Office.Interop.Visio;
-using System.IO;
+using io = System.IO;
 
 namespace Visio2Machine
 {
@@ -35,18 +35,19 @@ namespace Visio2Machine
 
 		public Visio(string file)
 		{
-			if (string.IsNullOrWhiteSpace(System.IO.Path.GetDirectoryName(file)))
-				this.fileName = System.IO.Path.Combine(Environment.CurrentDirectory, file);
+			if (io.Path.GetDirectoryName(file).isEmpty())
+				this.fileName = io.Path.Combine(Environment.CurrentDirectory, file);
 			else
 				this.fileName = file;
 
-			this.Name = System.IO.Path.GetFileNameWithoutExtension(file);
+			this.Name = io.Path.GetFileNameWithoutExtension(file);
 		}//constructor
 
 		public void PrintStat()
 		{
 			line("BEG PrintStat");
-			this.shapes.OrderBy(sh => sh.shType).forEach(sh => line("{0}\t{1}".fmt(sh.shType, sh.ToString())));
+			this.shapes.OrderBy(sh => sh.shType)
+				.forEach(sh => line("{shType}\t{this}".fmto(sh)));
 			line("END PrintStat");
 			output.writeToFile(outputFile);
 		}//function
@@ -64,22 +65,24 @@ namespace Visio2Machine
 				shapes.Add(new ShInfo().FillFrom(item));
 			}//for
 
-			#region csv
-			string fileCSV = "{0}.csv".fmt(Name); 
-			if (File.Exists(fileCSV))
+			#region txt
+			string fileTXT = "{0}.xml".fmt(Name); 
+			if (io.File.Exists(fileTXT))
 			{
-				ShInfo shCSV;
-				line("BEG parsing csvFile {0}".fmt(fileCSV));
-				var linesCSV = File.ReadAllLines(fileCSV);
-				foreach (var item in linesCSV)
+				ShInfo shTXT;
+				line("-----Open()");
+				line("BEG parsing txt {0}".fmt(fileTXT));
+				XDocument xdoc = XDocument.Load(fileTXT);
+				var nodes = xdoc.Root.Elements();
+				foreach (var item in nodes)
 				{
-					shCSV = new ShInfo().FillFrom(item);
-					if (shCSV.shType != ShType.NONE)
+					shTXT = new ShInfo().FillFrom(item);
+					if (shTXT.shType != ShType.NONE)
 					{
-						shapes.Add(shCSV);
+						shapes.Add(shTXT);
 					}//if
 				}//for
-				line("END parsing csvFile {0}".fmt(fileCSV));
+				line("END parsing txt {0}".fmt(fileTXT));
 			}//if
 			#endregion
 

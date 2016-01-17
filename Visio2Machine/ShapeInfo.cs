@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Visio2Machine
 {
@@ -16,7 +17,7 @@ namespace Visio2Machine
 	{
 		internal static Action<string> line;
 		static string sign = "-";
-		static int csvID = 0;
+		static int txtID = 0;
 
 		internal string ID, Name, Text, From, To, Device, Getter, Type, Pushes, Expr;
 		string[] Checks, Acts;
@@ -52,12 +53,48 @@ namespace Visio2Machine
 			return this;
 		}//function
 
+		internal ShInfo FillFrom(XElement x)
+		{
+			string What = x.Name.LocalName;
+			if (What.isEmpty()) { shType = ShType.NONE; return this; }
+
+			Func<XElement, string, string> getAttr = (z,s) =>
+			{ return z.Attribute(s).with(a => a.Value, string.Empty); };
+
+			ID = "{0}_{1}".fmt(What, txtID++);
+			line("-----FillFrom(XElement x)");
+			line("parsing csv {0}".fmt(ID));
+			if (What == R.DEVICE)
+			{
+				shType = ShType.Device;
+				Name = getAttr(x, R.NAME);
+				Type = getAttr(x, R.TYPE);
+				Getter = getAttr(x, R.GETTER);
+			}//if
+			else if (What == R.ACT)
+			{
+				shType = ShType.Act;
+				Name = getAttr(x, R.NAME);
+				Device = getAttr(x, R.DEVICE);
+				Expr = getAttr(x, R.CHANGE);
+			}//if
+			else if (What == R.CHECK)
+			{
+				shType = ShType.Check;
+				Name = getAttr(x, R.NAME);
+				Device = getAttr(x, R.DEVICE);
+				Expr = getAttr(x, R.TEST);
+			}//if
+			else { shType = ShType.NONE; }
+			return this;
+		}//function
+
 		internal ShInfo FillFrom(string csv)
 		{
 			string[] ss = csv.splitCSV();
 			string What = ss.get(0, string.Empty);
 			if (What.isEmpty()) { shType = ShType.NONE; return this; }
-			ID = "{0}_{1}".fmt(What, csvID++);
+			ID = "{0}_{1}".fmt(What, txtID++);
 			line("parsing csv {0}".fmt(ID));
 			if (What == R.DEVICE)
 			{
@@ -94,6 +131,7 @@ namespace Visio2Machine
 			if (shType != ShType.NONE) { return; }
 			if (IsConnector == false) { return; }
 
+			line("--------------DoConnector(IEnumerable<ShInfo> shapes)");
 			line("parsing 2 connector {0}".fmt(ID));
 			string[] ss = Text.splitLine();
 			
