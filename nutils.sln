@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sort_to_dirs", "sort_to_dir
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "move2dirOnBegin", "move2dirOnBegin\move2dirOnBegin.csproj", "{3BF0A19C-F175-46C5-BFF5-8ECB00ADD3A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Visio2Machine", "Visio2Machine\Visio2Machine.csproj", "{882C34C4-199D-4BB5-95AD-8A90A216213A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taimer", "Taimer\Taimer.csproj", "{3245D367-6C93-4102-A94E-0E66E0B90CE0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dir2ssp", "Dir2ssp\Dir2ssp.csproj", "{CE9BD7BF-D349-401A-879C-DFCEFDD98BEE}"
@@ -49,10 +47,6 @@ Global
 		{3BF0A19C-F175-46C5-BFF5-8ECB00ADD3A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BF0A19C-F175-46C5-BFF5-8ECB00ADD3A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BF0A19C-F175-46C5-BFF5-8ECB00ADD3A8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{882C34C4-199D-4BB5-95AD-8A90A216213A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{882C34C4-199D-4BB5-95AD-8A90A216213A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{882C34C4-199D-4BB5-95AD-8A90A216213A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{882C34C4-199D-4BB5-95AD-8A90A216213A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3245D367-6C93-4102-A94E-0E66E0B90CE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3245D367-6C93-4102-A94E-0E66E0B90CE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3245D367-6C93-4102-A94E-0E66E0B90CE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
