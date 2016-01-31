@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taimer", "Taimer\Taimer.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dir2ssp", "Dir2ssp\Dir2ssp.csproj", "{CE9BD7BF-D349-401A-879C-DFCEFDD98BEE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkBoard", "LinkBoard\LinkBoard.csproj", "{840E6581-F05E-4D04-85B1-E147BCD03D11}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{CE9BD7BF-D349-401A-879C-DFCEFDD98BEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE9BD7BF-D349-401A-879C-DFCEFDD98BEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE9BD7BF-D349-401A-879C-DFCEFDD98BEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{840E6581-F05E-4D04-85B1-E147BCD03D11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{840E6581-F05E-4D04-85B1-E147BCD03D11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{840E6581-F05E-4D04-85B1-E147BCD03D11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{840E6581-F05E-4D04-85B1-E147BCD03D11}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
