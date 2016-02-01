@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using io = System.IO;
 
 namespace LinkBoard
 {
@@ -15,7 +16,7 @@ namespace LinkBoard
 	{
 		static List<string> links = new List<string>();
 		static readonly string http = @"http://";
-		static readonly string path = System.IO.Path.Combine(
+		static readonly string path = io.Path.Combine(
 			Environment.CurrentDirectory, "LinkBoard.txt");
 
 		[DllImport("User32.dll")]
@@ -49,7 +50,7 @@ namespace LinkBoard
 
 		private void frmLinkBoard_Load(object sender, EventArgs e)
 		{
-			listLinks.DataSource = links;
+			//listLinks.DataSource = links;
 			
 		}//func
 
@@ -88,6 +89,10 @@ namespace LinkBoard
 
 		public void ListRefresh(ListBox lb)
 		{
+			if (lb.DataSource == null)
+			{
+				lb.DataSource = links;
+			}//if
 			var bc = lb.BindingContext[lb.DataSource];
 			(bc as CurrencyManager).Refresh();
 		}//function
@@ -103,12 +108,12 @@ namespace LinkBoard
 				if (iData.GetDataPresent(DataFormats.Text))
 				{
 					string s = (string)iData.GetData(DataFormats.Text);
-					this.Text = string.Format("{0}:{1}", DateTime.Now.ToShortTimeString(), s);
-					if (s.StartsWith(http))
+					this.Text = string.Format("{0}: {1}", DateTime.Now.ToShortTimeString(), s);
+					if (s.StartsWith(http) && links.Contains(s) == false)
 					{
 						links.Add(s);
 						ListRefresh(listLinks);
-						System.IO.File.WriteAllLines(path, links);
+						io.File.WriteAllLines(path, links);
 					}//if
 				}//if
 			}
