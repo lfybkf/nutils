@@ -15,7 +15,8 @@ namespace LinkBoard
 	public partial class frmLinkBoard : Form
 	{
 		static List<string> links = new List<string>();
-		static readonly string http = @"http://";
+		static readonly string http = @"http";
+		//static readonly string https = @"https";
 		static readonly string path = io.Path.Combine(
 			Environment.CurrentDirectory, "LinkBoard.txt");
 
