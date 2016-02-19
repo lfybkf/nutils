@@ -18,7 +18,7 @@ namespace LinkBoard
 		static readonly string http = @"http";
 		//static readonly string https = @"https";
 		static readonly string path = io.Path.Combine(
-			Environment.CurrentDirectory, "LinkBoard.txt");
+			Environment.CurrentDirectory, string.Format("lb{0}.txt", DateTime.Now.ToString("MMdd_HHmm")));
 
 		[DllImport("User32.dll")]
 		protected static extern int SetClipboardViewer(int hWndNewViewer);
