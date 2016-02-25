@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dir2ssp", "Dir2ssp\Dir2ssp.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkBoard", "LinkBoard\LinkBoard.csproj", "{840E6581-F05E-4D04-85B1-E147BCD03D11}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{8F76087B-B056-4956-A20A-E42E261A1A69}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{840E6581-F05E-4D04-85B1-E147BCD03D11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{840E6581-F05E-4D04-85B1-E147BCD03D11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{840E6581-F05E-4D04-85B1-E147BCD03D11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F76087B-B056-4956-A20A-E42E261A1A69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F76087B-B056-4956-A20A-E42E261A1A69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F76087B-B056-4956-A20A-E42E261A1A69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F76087B-B056-4956-A20A-E42E261A1A69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
