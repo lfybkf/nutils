@@ -24,7 +24,7 @@ namespace Dir2ssp
 			Name = Path.GetFileNameWithoutExtension(dir);
 
 			#region get media
-			allImages = Directory.GetFiles(dir, "*.jpg");
+			allImages = Directory.EnumerateFiles(dir).Where(z => z.EndsWith("jpg") || z.EndsWith("png")).ToArray();
 			allMp3s = Mp3.GetLib();
 			#endregion
 
@@ -116,6 +116,7 @@ namespace Dir2ssp
 			XElement xroot = new XElement("SSProject"
 				, new XAttribute("Version", "1")
 				, new XAttribute("Count", Images.Count())
+				, new XAttribute("Duration", Duration)
 				, new XAttribute("ItemDuration", ItemDuration)
 				, new XElement("VideoStream"
 					, new XAttribute("VideoDimension", 10)
@@ -126,7 +127,7 @@ namespace Dir2ssp
 					, new XElement("Fragment"
 						, new XAttribute("DurationMs", Duration)
 						, new XAttribute("SPACWI", 0)
-							, new XElement("Src", Music.Pass)
+							, new XElement("Src", Music.MediaFile)
 					))
 				);
 			#endregion

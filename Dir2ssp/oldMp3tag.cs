@@ -9,6 +9,7 @@ namespace Dir2ssp
 {
 	class oldMp3Tag
 	{
+
 		#region property bytes
 		byte[] bytesTAGID = new byte[3];      //  3
 		byte[] bytesTitle = new byte[30];     //  30
