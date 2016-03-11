@@ -16,10 +16,12 @@ namespace LinkBoard
 	{
 		static List<string> links = new List<string>();
 		static readonly string http = @"http";
-		//static readonly string https = @"https";
+		static readonly string https = @"https";
+		static readonly string prefix = "lb";
 		static readonly string path = io.Path.Combine(
-			Environment.CurrentDirectory, string.Format("lb{0}.txt", DateTime.Now.ToString("MMdd_HHmm")));
+		Environment.CurrentDirectory, string.Format("{0}{1}.txt", DateTime.Now.ToString("MMdd_HHmm")));
 
+		#region dllImport
 		[DllImport("User32.dll")]
 		protected static extern int SetClipboardViewer(int hWndNewViewer);
 		// Добавляет новое окно в цепочку окон уведомляемых сообщением wm_DrawClipboard 
@@ -40,25 +42,21 @@ namespace LinkBoard
 		// Возвращает значение переданое функцией окна
 
 		IntPtr nextClipboardViewer; //Для хранения указателя на следующее окно
-
-		public frmLinkBoard()
-		{
+		#endregion
+		
+		public frmLinkBoard() {
 			InitializeComponent();
 			nextClipboardViewer = (IntPtr)SetClipboardViewer((int)this.Handle);
 		}//func
 
-		
-
-		private void frmLinkBoard_Load(object sender, EventArgs e)
-		{
+		private void frmLinkBoard_Load(object sender, EventArgs e)		{
+			prefix = Prompt.ShowDialog(prefix, "get a Prefix");
 			//listLinks.DataSource = links;
 			
 		}//func
 
-		private void frmLinkBoard_FormClosed(object sender, FormClosedEventArgs e)
-		{
+		private void frmLinkBoard_FormClosed(object sender, FormClosedEventArgs e)		{
 			ChangeClipboardChain(this.Handle, nextClipboardViewer);
-
 		}//func
 
 		// переопределяем метод
@@ -125,4 +123,29 @@ namespace LinkBoard
 		}
 
 	}//class
+	
+	public static class Prompt
+	{
+    public static string ShowDialog(string text, string caption)
+    {
+        Form frm = new Form()
+        {
+            Width = 500,
+            Height = 150,
+            FormBorderStyle = FormBorderStyle.FixedDialog,
+            Text = caption,
+            StartPosition = FormStartPosition.CenterScreen
+        };
+        Label textLabel = new Label() { Left = 50, Top=20, Text=text };
+        TextBox textBox = new TextBox() { Text = text, Left = 50, Top=50, Width=400 };
+        Button btnOK = new Button() { Text = "OK", Left=350, Width=100, Top=70, DialogResult = DialogResult.OK };
+        btnOK.Click += (sender, e) => { frm.Close(); };
+        frm.Controls.Add(textBox);
+        frm.Controls.Add(btnOK);
+        frm.Controls.Add(textLabel);
+        frm.AcceptButton = btnOK;
+
+        return frm.ShowDialog() == DialogResult.OK ? textBox.Text : "";
+    }
+}
 }//ns
