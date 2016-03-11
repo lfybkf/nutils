@@ -16,10 +16,9 @@ namespace LinkBoard
 	{
 		static List<string> links = new List<string>();
 		static readonly string http = @"http";
-		static readonly string https = @"https";
-		static readonly string prefix = "lb";
-		static readonly string path = io.Path.Combine(
-		Environment.CurrentDirectory, string.Format("{0}{1}.txt", DateTime.Now.ToString("MMdd_HHmm")));
+		//static readonly string https = @"https";
+		static string prefix = "lb";
+		static string path;
 
 		#region dllImport
 		[DllImport("User32.dll")]
@@ -51,8 +50,7 @@ namespace LinkBoard
 
 		private void frmLinkBoard_Load(object sender, EventArgs e)		{
 			prefix = Prompt.ShowDialog(prefix, "get a Prefix");
-			//listLinks.DataSource = links;
-			
+			path = io.Path.Combine(Environment.CurrentDirectory, string.Format("{0}{1}.txt", prefix, DateTime.Now.ToString("MMdd_HHmm")));
 		}//func
 
 		private void frmLinkBoard_FormClosed(object sender, FormClosedEventArgs e)		{
@@ -145,7 +143,7 @@ namespace LinkBoard
         frm.Controls.Add(textLabel);
         frm.AcceptButton = btnOK;
 
-        return frm.ShowDialog() == DialogResult.OK ? textBox.Text : "";
+        return frm.ShowDialog() == DialogResult.OK ? textBox.Text : string.Empty;
     }
 }
 }//ns
