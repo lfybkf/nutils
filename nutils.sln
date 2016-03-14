@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "make_dirs", "make_dirs\make_dirs.csproj", "{436DE78D-41B1-4BCA-BCAA-4ECDAC9D51A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dir2xml", "dir2xml\dir2xml.csproj", "{8C228F26-E2A1-43C4-ABCC-3FDB6698BA56}"
@@ -20,6 +22,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkBoard", "LinkBoard\LinkBoard.csproj", "{840E6581-F05E-4D04-85B1-E147BCD03D11}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{8F76087B-B056-4956-A20A-E42E261A1A69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "imgAL", "imgAL\imgAL.csproj", "{EE96633B-302C-4B6F-B931-B267E5CA4088}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,6 +71,10 @@ Global
 		{8F76087B-B056-4956-A20A-E42E261A1A69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F76087B-B056-4956-A20A-E42E261A1A69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F76087B-B056-4956-A20A-E42E261A1A69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE96633B-302C-4B6F-B931-B267E5CA4088}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE96633B-302C-4B6F-B931-B267E5CA4088}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE96633B-302C-4B6F-B931-B267E5CA4088}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE96633B-302C-4B6F-B931-B267E5CA4088}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
