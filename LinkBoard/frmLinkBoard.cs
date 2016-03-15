@@ -27,7 +27,7 @@ namespace LinkBoard
 		// пpи изменении буфеpа
 		// hWind указатель на окно
 		// Возвращает указатель на следующие окно в цепочке
-		
+
 		[DllImport("User32.dll", CharSet = CharSet.Auto)]
 		public static extern bool ChangeClipboardChain(IntPtr hWndRemove, IntPtr hWndNewNext);
 		// Удаляет окно hWindDel из цепочки просмотра буфера изаменяет его hWindNext
@@ -42,18 +42,23 @@ namespace LinkBoard
 
 		IntPtr nextClipboardViewer; //Для хранения указателя на следующее окно
 		#endregion
-		
-		public frmLinkBoard() {
+
+		public frmLinkBoard()
+		{
 			InitializeComponent();
 			nextClipboardViewer = (IntPtr)SetClipboardViewer((int)this.Handle);
 		}//func
 
-		private void frmLinkBoard_Load(object sender, EventArgs e)		{
-			prefix = Prompt.ShowDialog(prefix, "get a Prefix");
+		private void frmLinkBoard_Load(object sender, EventArgs e)
+		{
+			Clipboard.Clear();
+			prefix = Prompt.ShowDialog(prefix, "get a Prefix", new[] {"spa", "other"});
 			path = io.Path.Combine(Environment.CurrentDirectory, string.Format("{0}{1}.txt", prefix, DateTime.Now.ToString("MMdd_HHmm")));
+			Text = io.Path.GetFileNameWithoutExtension(path);
 		}//func
 
-		private void frmLinkBoard_FormClosed(object sender, FormClosedEventArgs e)		{
+		private void frmLinkBoard_FormClosed(object sender, FormClosedEventArgs e)
+		{
 			ChangeClipboardChain(this.Handle, nextClipboardViewer);
 		}//func
 
@@ -98,14 +103,14 @@ namespace LinkBoard
 		{
 			try
 			{
+				if (path == null)	{ Clipboard.Clear(); return; }
+				
 				IDataObject iData = new DataObject();
 				iData = Clipboard.GetDataObject();
-
 
 				if (iData.GetDataPresent(DataFormats.Text))
 				{
 					string s = (string)iData.GetData(DataFormats.Text);
-					this.Text = string.Format("{0}: {1}", DateTime.Now.ToShortTimeString(), s);
 					if (s.StartsWith(http) && links.Contains(s) == false)
 					{
 						links.Add(s);
@@ -121,29 +126,41 @@ namespace LinkBoard
 		}
 
 	}//class
-	
+
 	public static class Prompt
 	{
-    public static string ShowDialog(string text, string caption)
-    {
-        Form frm = new Form()
-        {
-            Width = 500,
-            Height = 150,
-            FormBorderStyle = FormBorderStyle.FixedDialog,
-            Text = caption,
-            StartPosition = FormStartPosition.CenterScreen
-        };
-        Label textLabel = new Label() { Left = 50, Top=20, Text=text };
-        TextBox textBox = new TextBox() { Text = text, Left = 50, Top=50, Width=400 };
-        Button btnOK = new Button() { Text = "OK", Left=350, Width=100, Top=70, DialogResult = DialogResult.OK };
-        btnOK.Click += (sender, e) => { frm.Close(); };
-        frm.Controls.Add(textBox);
-        frm.Controls.Add(btnOK);
-        frm.Controls.Add(textLabel);
-        frm.AcceptButton = btnOK;
+		public static string ShowDialog(string text, string caption, string[] choose = null)
+		{
+			Form frm = new Form()
+			{
+				Width = 300,
+				Height = 150,
+				FormBorderStyle = FormBorderStyle.FixedDialog,
+				Text = caption,
+				StartPosition = FormStartPosition.CenterScreen,
+				MinimizeBox = false,
+				MaximizeBox = false,
+			};
+			frm.Font = new Font("Courier", 14);
+			ComboBox ctlText = new ComboBox() { 
+				Text = text, 
+				Dock = DockStyle.Top, 
+				AutoCompleteMode = AutoCompleteMode.SuggestAppend,
+				AutoCompleteSource = AutoCompleteSource.ListItems,
+			};
+			if (choose != null)
+			{
+				ctlText.Items.AddRange(choose);		
+			}//if
+			Button btnOK = new Button() { Text = "OK", Dock = DockStyle.Fill, DialogResult = DialogResult.OK };
+			btnOK.Click += (sender, e) => { frm.Close(); };
+			frm.Controls.Add(ctlText);
+			frm.Controls.Add(btnOK);
+			frm.AcceptButton = btnOK;
+			btnOK.BringToFront();
 
-        return frm.ShowDialog() == DialogResult.OK ? textBox.Text : string.Empty;
-    }
-}
+
+			return frm.ShowDialog() == DialogResult.OK ? ctlText.Text : string.Empty;
+		}
+	}
 }//ns
