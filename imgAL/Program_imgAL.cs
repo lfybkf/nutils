@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace imgAL
 {
-	class Program
+	class Program_imgAL
 	{
 		[System.Runtime.InteropServices.DllImport("User32.dll")]
 		public static extern Int32 SetForegroundWindow(int hWnd);
