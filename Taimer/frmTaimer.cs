@@ -13,7 +13,7 @@ namespace Taimer
 {
 	public partial class frmTaimer : Form
 	{
-		static int[] mins = {1,5,15,30,60,90,120};
+		static int[] mins = {1,5,15,30,45,60,90};
 		Taim[] taims = null;
 		Taim CurTaim = null;
 
