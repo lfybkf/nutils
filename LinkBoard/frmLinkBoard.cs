@@ -53,7 +53,7 @@ namespace LinkBoard
 		{
 			Clipboard.Clear();
 			prefix = Prompt.ShowDialog(prefix, "get a Prefix", new[] {"spa", "other"});
-			path = io.Path.Combine(Environment.CurrentDirectory, string.Format("{0}{1}.txt", prefix, DateTime.Now.ToString("MMdd_HHmm")));
+			path = io.Path.Combine(Environment.CurrentDirectory, string.Format("{0}_{1}.txt", DateTime.Now.ToString("MMdd_HHmm"), prefix));
 			Text = io.Path.GetFileNameWithoutExtension(path);
 		}//func
 

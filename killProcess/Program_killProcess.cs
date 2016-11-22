@@ -34,9 +34,18 @@ namespace killProcess
 			foreach (var p in plist)
 			{
 				Console.WriteLine("    killing = " + p.MainWindowTitle);
-				p.Kill();
-				p.WaitForExit(10000);
+				try
+				{
+					p.Kill();
+					p.WaitForExit(10000);
+				}//try
+				catch (Exception exception)
+				{
+					Console.WriteLine("    error = " + exception.Message.Substring(0, 30));
+				}//catch
+
 			}//for
+
 		}//function
 	}//class
 }
