@@ -9,17 +9,17 @@ using io = System.IO;
 namespace killProcess
 {
 	class Item { public int ID; public string Name;
-		public static int C = 0;
-		public Item(int id, string name) { ID = id;  Name = name; }
+		static int C = 1;
+		public Item(string name) { ID = C++;  Name = name; }
 	}
 
 	class Program_killProcess
 	{
 		static string pathToList = io.Directory.EnumerateFiles(Environment.CurrentDirectory)
-			.FirstOrDefault(f => f.StartsWith("killProcess") && !f.EndsWith("exe"));
+			.FirstOrDefault(f => io.Path.GetFileName(f).StartsWith("killProcess") && !f.EndsWith("exe"));
 		static Item[] items = pathToList != null
-			? io.File.ReadAllLines(pathToList).Select(f => new Item(Item.C++, f)).ToArray()
-			: new Item[] { new Item(1, "chrome"), new Item(2, "skype") };
+			? io.File.ReadAllLines(pathToList).Select(z => new Item(z)).ToArray()
+			: new Item[] { new Item("chrome"), new Item("skype") };
 
 		static void Main(string[] args)
 		{
